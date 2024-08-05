@@ -9,8 +9,12 @@ public class SwiftHighlightsPlugin: NSObject, FlutterPlugin {
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
 
-  public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    print("Hello from iOS 2")
-      result("iOS 123  \(Highlights.companion.description)")
+  public func handle(
+    _ call: FlutterMethodCall,
+    result: @escaping FlutterResult
+  ) {
+      switch(call.method) {
+          
+      }
   }
 }
