@@ -1,0 +1,6 @@
+framework module highlights {
+    umbrella header "highlights.h"
+
+    export *
+    module * { export * }
+}

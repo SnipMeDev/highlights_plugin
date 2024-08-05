@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - highlights_plugin (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - highlights_plugin (from `.symlinks/plugins/highlights_plugin/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  highlights_plugin:
+    :path: ".symlinks/plugins/highlights_plugin/ios"
+
+SPEC CHECKSUMS:
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  highlights_plugin: 83710af52e9ce2a08e2f251e9c2cdeda75a80909
+
+PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3
+
+COCOAPODS: 1.13.0
