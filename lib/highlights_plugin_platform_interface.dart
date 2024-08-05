@@ -23,7 +23,7 @@ abstract class HighlightsPluginPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<String?> getPlatformVersion() {
-    throw UnimplementedError('platformVersion() has not been implemented.');
+  Future<String?> getHighlights() {
+    throw UnimplementedError('getHighlights() has not been implemented.');
   }
 }
