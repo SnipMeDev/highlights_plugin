@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
 import 'package:highlights_plugin/highlights_plugin.dart';
 
 void main() {
@@ -16,34 +13,20 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
   final _highlightsPlugin = HighlightsPlugin();
 
-  @override
-  void initState() {
-    super.initState();
-    initPlatformState();
+  String _language = 'java';
+  String _theme = 'monokai';
+
+  void _updateLanguage(String language) {
+    setState(() {
+      _language = language;
+    });
   }
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      platformVersion =
-          await _highlightsPlugin.getHighlights() ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
+  void _updateTheme(String theme) {
     setState(() {
-      _platformVersion = platformVersion;
+      _theme = theme;
     });
   }
 
@@ -54,10 +37,63 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+        body: const Center(
+          child: Text('Running Highlights'),
+        ),
+        bottomNavigationBar: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            FutureDropdown(
+              selected: _language,
+              future: _highlightsPlugin.getLanguages(),
+              onChanged: _updateLanguage,
+            ),
+            const SizedBox(height: 16),
+            FutureDropdown(
+              selected: _theme,
+              future: _highlightsPlugin.getThemes(),
+              onChanged: _updateTheme,
+            ),
+          ],
         ),
       ),
+    );
+  }
+}
+
+class FutureDropdown<T> extends StatelessWidget {
+  const FutureDropdown({
+    required this.selected,
+    required this.future,
+    required this.onChanged,
+    Key? key,
+  }) : super(key: key);
+
+  final T selected;
+  final Future<List<T>> future;
+  final Function(T) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: future,
+      builder: (context, snapshot) {
+        final isLoaded = snapshot.connectionState == ConnectionState.done;
+        final data = snapshot.data;
+        final items = data?.map<DropdownMenuItem<String>>(
+          (e) => DropdownMenuItem(child: Text(e.toString())),
+        );
+
+        if (!isLoaded) {
+          return const CircularProgressIndicator();
+        } else {
+          return DropdownButton(
+            value: selected.toString(),
+            items: items?.toList(),
+            onChanged: (value) => onChanged(value as T),
+          );
+        }
+      },
     );
   }
 }

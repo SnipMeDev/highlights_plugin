@@ -1,10 +1,12 @@
-import 'package:highlights_plugin/model/syntax_language.dart';
-import 'package:highlights_plugin/model/syntax_theme.dart';
+import 'package:highlights_plugin/model/code_highlight.dart';
+import 'package:highlights_plugin/model/phrase_location.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
+import 'highlights_interface.dart';
 import 'highlights_plugin_method_channel.dart';
 
-abstract class HighlightsPluginPlatform extends PlatformInterface {
+abstract class HighlightsPluginPlatform extends PlatformInterface
+    implements HighlightsInterface {
   /// Constructs a HighlightsPluginPlatform.
   HighlightsPluginPlatform() : super(token: _token);
 
@@ -25,20 +27,23 @@ abstract class HighlightsPluginPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<String?> getHighlights(
+  @override
+  Future<List<CodeHighlight>> getHighlights(
     String code,
     String language,
     String theme,
-    String emphasisLocations,
+    List<PhraseLocation> emphasisLocations,
   ) {
     throw UnimplementedError('getHighlights() has not been implemented.');
   }
 
-  Future<List<SyntaxLanguage>> getLanguages() {
+  @override
+  Future<List<String>> getLanguages() {
     throw UnimplementedError('getLanguages() has not been implemented.');
   }
 
-  Future<List<SyntaxTheme>> getThemes() {
+  @override
+  Future<List<String>> getThemes() {
     throw UnimplementedError('getThemes() has not been implemented.');
   }
 }

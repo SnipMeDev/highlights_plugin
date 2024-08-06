@@ -1,30 +1,33 @@
 import 'package:highlights_plugin/model/code_highlight.dart';
 import 'package:highlights_plugin/model/phrase_location.dart';
-import 'package:highlights_plugin/model/syntax_language.dart';
-import 'package:highlights_plugin/model/syntax_theme.dart';
 
+import 'highlights_interface.dart';
 import 'highlights_plugin_platform_interface.dart';
 
-class HighlightsPlugin {
+class HighlightsPlugin implements HighlightsInterface {
+  @override
   Future<List<CodeHighlight>> getHighlights(
     String code,
-    SyntaxLanguage language,
-    SyntaxTheme theme,
-    PhraseLocation emphasisLocations,
+    String language,
+    String theme,
+    List<PhraseLocation> emphasisLocations,
   ) {
-    return HighlightsPluginPlatform.instance.getHighlights(
-      code,
-      language,
-      theme,
-      emphasisLocations,
-    );
+    // return HighlightsPluginPlatform.instance.getHighlights(
+    //   code,
+    //   language,
+    //   theme,
+    //   emphasisLocations,
+    // );
+    return Future.value([]);
   }
 
-  Future<List<SyntaxLanguage>> getLanguages() {
+  @override
+  Future<List<String>> getLanguages() {
     return HighlightsPluginPlatform.instance.getLanguages();
   }
 
-  Future<List<SyntaxTheme>> getThemes() {
+  @override
+  Future<List<String>> getThemes() {
     return HighlightsPluginPlatform.instance.getThemes();
   }
 }
