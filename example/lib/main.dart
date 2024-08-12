@@ -52,11 +52,11 @@ class _MyAppState extends State<MyApp> {
                 onChanged: _updateLanguage,
               ),
               const SizedBox(height: 16),
-              // FutureDropdown(
-              //   selected: _theme,
-              //   future: _highlightsPlugin.getThemes(),
-              //   onChanged: _updateTheme,
-              // ),
+              FutureDropdown(
+                selected: _theme,
+                future: _highlightsPlugin.getThemes(),
+                onChanged: _updateTheme,
+              ),
             ],
           ),
         ),
@@ -84,17 +84,20 @@ class FutureDropdown<T> extends StatelessWidget {
       builder: (context, snapshot) {
         final isLoaded = snapshot.connectionState == ConnectionState.done;
         final data = snapshot.data;
-        print(data);
         final items = data?.map<DropdownMenuItem<String>>(
-          (e) => DropdownMenuItem(child: Text(e.toString())),
-        ).toList();
+          (value) => DropdownMenuItem(
+            value: value as String,
+            child: Text(value),
+          ),
+        );
 
         if (!isLoaded) {
           return const CircularProgressIndicator();
         } else {
           return DropdownButton(
+            hint: const Text("Select"),
             value: selected,
-            items: [DropdownMenuItem(child: Text('$data'))],
+            items: items?.toList(),
             onChanged: (value) => onChanged(value as T),
           );
         }
