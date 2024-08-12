@@ -15,8 +15,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final _highlightsPlugin = HighlightsPlugin();
 
-  String _language = 'java';
-  String _theme = 'monokai';
+  String? _language;
+  String? _theme;
 
   void _updateLanguage(String language) {
     setState(() {
@@ -40,21 +40,25 @@ class _MyAppState extends State<MyApp> {
         body: const Center(
           child: Text('Running Highlights'),
         ),
-        bottomNavigationBar: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            FutureDropdown(
-              selected: _language,
-              future: _highlightsPlugin.getLanguages(),
-              onChanged: _updateLanguage,
-            ),
-            const SizedBox(height: 16),
-            FutureDropdown(
-              selected: _theme,
-              future: _highlightsPlugin.getThemes(),
-              onChanged: _updateTheme,
-            ),
-          ],
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              FutureDropdown(
+                selected: _language,
+                future: _highlightsPlugin.getLanguages(),
+                onChanged: _updateLanguage,
+              ),
+              const SizedBox(height: 16),
+              // FutureDropdown(
+              //   selected: _theme,
+              //   future: _highlightsPlugin.getThemes(),
+              //   onChanged: _updateTheme,
+              // ),
+            ],
+          ),
         ),
       ),
     );
@@ -69,7 +73,7 @@ class FutureDropdown<T> extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final T selected;
+  final T? selected;
   final Future<List<T>> future;
   final Function(T) onChanged;
 
@@ -80,16 +84,17 @@ class FutureDropdown<T> extends StatelessWidget {
       builder: (context, snapshot) {
         final isLoaded = snapshot.connectionState == ConnectionState.done;
         final data = snapshot.data;
+        print(data);
         final items = data?.map<DropdownMenuItem<String>>(
           (e) => DropdownMenuItem(child: Text(e.toString())),
-        );
+        ).toList();
 
         if (!isLoaded) {
           return const CircularProgressIndicator();
         } else {
           return DropdownButton(
-            value: selected.toString(),
-            items: items?.toList(),
+            value: selected,
+            items: [DropdownMenuItem(child: Text('$data'))],
             onChanged: (value) => onChanged(value as T),
           );
         }

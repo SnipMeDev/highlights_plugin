@@ -25,6 +25,7 @@ class HighlightsPlugin : FlutterPlugin, MethodCallHandler {
     }
 
     override fun onMethodCall(call: MethodCall, result: Result) {
+        println("Method call ${call.method}")
         when (call.method) {
             "getHighlights" ->
 //                highlights = getHighlights(

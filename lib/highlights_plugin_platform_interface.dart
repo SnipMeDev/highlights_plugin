@@ -34,12 +34,12 @@ abstract class HighlightsPluginPlatform extends PlatformInterface
     String theme,
     List<PhraseLocation> emphasisLocations,
   ) {
-    throw UnimplementedError('getHighlights() has not been implemented.');
+    throw UnimplementedError('$getHighlights has not been implemented.');
   }
 
   @override
   Future<List<String>> getLanguages() {
-    throw UnimplementedError('getLanguages() has not been implemented.');
+    throw UnimplementedError('$getLanguages has not been implemented.');
   }
 
   @override
