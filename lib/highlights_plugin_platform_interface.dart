@@ -44,6 +44,6 @@ abstract class HighlightsPluginPlatform extends PlatformInterface
 
   @override
   Future<List<String>> getThemes() {
-    throw UnimplementedError('getThemes() has not been implemented.');
+    throw UnimplementedError('$getThemes has not been implemented.');
   }
 }

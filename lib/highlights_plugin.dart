@@ -12,12 +12,12 @@ class HighlightsPlugin implements HighlightsInterface {
     String theme,
     List<PhraseLocation> emphasisLocations,
   ) {
-    // return HighlightsPluginPlatform.instance.getHighlights(
-    //   code,
-    //   language,
-    //   theme,
-    //   emphasisLocations,
-    // );
+    return HighlightsPluginPlatform.instance.getHighlights(
+      code,
+      language,
+      theme,
+      emphasisLocations,
+    );
     return Future.value([]);
   }
 

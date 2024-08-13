@@ -17,6 +17,7 @@ class _MyAppState extends State<MyApp> {
 
   String? _language;
   String? _theme;
+  List<String> _highlights = [];
 
   void _updateLanguage(String language) {
     setState(() {
@@ -30,15 +31,43 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void _updateHighlights(String code) {
+    _highlights = _highlightsPlugin.getHighlights(code, language, theme, [])
+    setState(() {
+      _highlights = code.split(' ');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('highlights'),
         ),
-        body: const Center(
-          child: Text('Running Highlights'),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: TextField(
+                onChanged: _updateHighlights,
+                maxLines: 20,
+                keyboardType: TextInputType.multiline,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  _highlights.join(" | "),
+                  textAlign: TextAlign.justify,
+                ),
+              ),
+            )
+          ],
         ),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(16),
