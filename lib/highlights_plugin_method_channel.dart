@@ -38,6 +38,15 @@ class MethodChannelHighlightsPlugin extends HighlightsPluginPlatform
     );
 
     return [];
+
+    // return [
+    //   for (final item in result)
+    //     CodeHighlight(
+    //       item['phrase'],
+    //       item['location'],
+    //       item['isEmphasized'],
+    //     ),
+    // ;
   }
 
   @override

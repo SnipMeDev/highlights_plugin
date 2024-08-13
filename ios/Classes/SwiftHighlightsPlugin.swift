@@ -26,19 +26,26 @@ public class SwiftHighlightsPlugin: NSObject, FlutterPlugin {
           let themes = SyntaxThemes().getNames()
           result(themes)
       case "getHighlights":
-          
           let map = call.arguments as! Dictionary<String, Any>
           
-          let language = SyntaxLanguage.companion.getByName(name:  )
+          let codeArg = map["code"] as! String
+          
+          let languageArg = map["language"] as! String
+          let language = SyntaxLanguage.companion.getByName(name: languageArg)
+          
+          let themeArg = map["theme"] as! String
+          let theme = SyntaxThemes.shared.light.first(where: { (key, _) in
+              key.lowercased() == themeArg.lowercased()
+          })?.value
 
           highlights = Highlights.Builder(
-            code: String,
-            language: language,
-            theme: <#T##SyntaxTheme#>,
-            emphasisLocations: call.arguments.,
-          ).build();
+            code: codeArg,
+            language: language ?? SyntaxLanguage.default_,
+            theme: theme ?? SyntaxThemes().default(darkMode: false),
+            emphasisLocations: [] // TODO Handle
+          ).build()
 
-          let result;
+          result(highlights.description)
       default:
           result(["No results"])
       }

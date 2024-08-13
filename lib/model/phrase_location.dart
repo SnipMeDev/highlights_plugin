@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'phrase_location.g.dart';
+
+@JsonSerializable()
 class PhraseLocation {
   final int start;
   final int end;
@@ -7,8 +12,8 @@ class PhraseLocation {
     required this.end,
   });
 
-  @override
-  String toString() {
-    return 'PhraseLocation{start: $start, end: $end}';
-  }
+  factory PhraseLocation.fromJson(Map<String, dynamic> json) =>
+      _$PhraseLocationFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PhraseLocationToJson(this);
 }
