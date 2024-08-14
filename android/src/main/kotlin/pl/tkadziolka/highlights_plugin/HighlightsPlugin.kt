@@ -1,10 +1,12 @@
 package pl.tkadziolka.highlights_plugin
 
+import android.util.JsonWriter
 import dev.snipme.highlights.Highlights
 import dev.snipme.highlights.model.CodeHighlight
 import dev.snipme.highlights.model.SyntaxLanguage
 import dev.snipme.highlights.model.SyntaxThemes
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.plugin.common.JSONUtil
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
@@ -27,17 +29,23 @@ class HighlightsPlugin : FlutterPlugin, MethodCallHandler {
     override fun onMethodCall(call: MethodCall, result: Result) {
         println("Method call ${call.method}")
         when (call.method) {
-            "getHighlights" ->
-//                highlights = getHighlights(
-//                    code = call.argument("code") ?: "",
-//                    language = call.argument("language") ?: SyntaxLanguage.DEFAULT,
-//                    theme = call.argument("theme") ?: SyntaxThemes.default(),
-//                    emphasisLocations = call.argument("emphasisLocations") ?: emptyList()
-//                )
-//                result.success(highlights)
-                result.success(listOf<CodeHighlight>())
+            "getHighlights" -> {
+                highlights = Highlights.Builder(
+                    code = call.argument("code") ?: "",
+                    language = call.argument("language") ?: SyntaxLanguage.DEFAULT,
+                    theme = call.argument("theme") ?: SyntaxThemes.default(),
+                    emphasisLocations = call.argument("emphasisLocations") ?: emptyList()
+                ).build()
+
+                val result = highlights.getHighlights()
+
+                // Serialize to json
+
+                result.success(highlights)
+            }
 
             "getLanguages" -> result.success(SyntaxLanguage.getNames())
+
             "getThemes" -> result.success(SyntaxThemes.getNames())
             else -> {
                 result.notImplemented()

@@ -45,7 +45,10 @@ public class SwiftHighlightsPlugin: NSObject, FlutterPlugin {
             emphasisLocations: [] // TODO Handle
           ).build()
 
-          result(highlights.description)
+          let encoder = JSONEncoder()
+          let json = try encoder.encode(highlights)
+
+          result(json)
       default:
           result(["No results"])
       }

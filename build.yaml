@@ -1,0 +1,12 @@
+targets:
+  $default:
+    sources:
+      - lib/**
+      - pubspec.*
+      - $package$
+      - test/**
+    builders:
+      json_serializable:json_serializable:
+        # add file path below if you want to generate json_serializable for this file
+        generate_for:
+          - lib/model/**.dart

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:highlights_plugin/highlights_interface.dart';
@@ -32,12 +34,14 @@ class MethodChannelHighlightsPlugin extends HighlightsPluginPlatform
       "emphasisLocations": emphasisLocations,
     };
 
-    final result = await methodChannel.invokeMethod(
+    final json = await methodChannel.invokeMethod(
       index.getHighlights,
       arguments,
     );
 
-    return [];
+    return jsonDecode(json)
+        .map<CodeHighlight>((data) => CodeHighlight.fromJson(data))
+        .toList();
 
     // return [
     //   for (final item in result)
