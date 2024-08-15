@@ -15,6 +15,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final _highlightsPlugin = HighlightsPlugin();
 
+  String? _code;
   String? _language;
   String? _theme;
   List<String> _highlights = [];
@@ -23,17 +24,20 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _language = language;
     });
+    _updateHighlights(_code ?? '');
   }
 
   void _updateTheme(String theme) {
     setState(() {
       _theme = theme;
     });
+    _updateHighlights(_code ?? '');
   }
 
   Future<void> _updateHighlights(String code) async {
+    _code = code;
     final highlightList = await _highlightsPlugin.getHighlights(
-      code,
+      _code ?? '',
       _language ?? '',
       _theme ?? '',
       [],
@@ -68,13 +72,14 @@ class _MyAppState extends State<MyApp> {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
-                  _highlights.join(" | "),
-                  textAlign: TextAlign.justify,
+                  _highlights.join("\n"),
+                  textAlign: TextAlign.start,
                 ),
               ),
             )
           ],
         ),
+        // TODO Add theme switcher
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(

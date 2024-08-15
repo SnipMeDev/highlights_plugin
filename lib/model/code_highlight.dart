@@ -31,6 +31,10 @@ class BoldHighlight extends CodeHighlight {
     Map<String, dynamic> json,
   ) =>
       _$BoldHighlightFromJson(json);
+
+  @override
+  String toString() =>
+      'BoldHighlight(start:${location.start}, end:${location.end})';
 }
 
 @JsonSerializable(createToJson: false)
@@ -46,4 +50,8 @@ class ColorHighlight extends CodeHighlight {
     Map<String, dynamic> json,
   ) =>
       _$ColorHighlightFromJson(json);
+
+  @override
+  String toString() =>
+      'ColorHighlight(start:${location.start}, end:${location.end}), rgb: $rgb)';
 }

@@ -16,4 +16,7 @@ class PhraseLocation {
       _$PhraseLocationFromJson(json);
 
   Map<String, dynamic> toJson() => _$PhraseLocationToJson(this);
+
+  @override
+  String toString() => 'PhraseLocation(start: $start, end: $end)';
 }
