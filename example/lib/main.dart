@@ -31,10 +31,16 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  void _updateHighlights(String code) {
-    _highlights = _highlightsPlugin.getHighlights(code, language, theme, [])
+  Future<void> _updateHighlights(String code) async {
+    final highlightList = await _highlightsPlugin.getHighlights(
+      code,
+      _language ?? '',
+      _theme ?? '',
+      [],
+    );
     setState(() {
-      _highlights = code.split(' ');
+      _highlights =
+          highlightList.map((highlight) => highlight.toString()).toList();
     });
   }
 

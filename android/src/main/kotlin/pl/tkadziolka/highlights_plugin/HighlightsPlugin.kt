@@ -2,6 +2,7 @@ package pl.tkadziolka.highlights_plugin
 
 import android.util.JsonWriter
 import dev.snipme.highlights.Highlights
+import dev.snipme.highlights.internal.toJson
 import dev.snipme.highlights.model.CodeHighlight
 import dev.snipme.highlights.model.SyntaxLanguage
 import dev.snipme.highlights.model.SyntaxThemes
@@ -32,16 +33,15 @@ class HighlightsPlugin : FlutterPlugin, MethodCallHandler {
             "getHighlights" -> {
                 highlights = Highlights.Builder(
                     code = call.argument("code") ?: "",
-                    language = call.argument("language") ?: SyntaxLanguage.DEFAULT,
-                    theme = call.argument("theme") ?: SyntaxThemes.default(),
+                    language = SyntaxLanguage.getByName(call.argument("language") ?: "")
+                        ?: SyntaxLanguage.DEFAULT,
+                    theme = SyntaxThemes.getByName(call.argument("theme") ?: "")
+                        ?: SyntaxThemes.default(),
                     emphasisLocations = call.argument("emphasisLocations") ?: emptyList()
                 ).build()
 
-                val result = highlights.getHighlights()
-
-                // Serialize to json
-
-                result.success(highlights)
+                val highlightList = highlights.getHighlights()
+                result.success(highlightList.toJson())
             }
 
             "getLanguages" -> result.success(SyntaxLanguage.getNames())
@@ -51,21 +51,6 @@ class HighlightsPlugin : FlutterPlugin, MethodCallHandler {
                 result.notImplemented()
             }
         }
-
-//        if (call.method == "getHighlights") {
-//
-//            highlights = Highlights.Builder(
-//                code = call.argument("code") ?: "",
-//                language = call.argument("language") ?: SyntaxLanguage.DEFAULT,
-//                theme = call.argument("theme") ?: SyntaxThemes.default(),
-//                emphasisLocations = call.argument("emphasisLocations") ?: emptyList()
-//            ).build()
-//
-//
-//            result.success(highlights)
-//        } else {
-//            result.notImplemented()
-//        }
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {

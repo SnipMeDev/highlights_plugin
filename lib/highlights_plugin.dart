@@ -18,7 +18,6 @@ class HighlightsPlugin implements HighlightsInterface {
       theme,
       emphasisLocations,
     );
-    return Future.value([]);
   }
 
   @override

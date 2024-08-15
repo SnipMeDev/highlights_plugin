@@ -39,18 +39,16 @@ class MethodChannelHighlightsPlugin extends HighlightsPluginPlatform
       arguments,
     );
 
-    return jsonDecode(json)
-        .map<CodeHighlight>((data) => CodeHighlight.fromJson(data))
-        .toList();
+    final data = jsonDecode(json);
 
-    // return [
-    //   for (final item in result)
-    //     CodeHighlight(
-    //       item['phrase'],
-    //       item['location'],
-    //       item['isEmphasized'],
-    //     ),
-    // ;
+    if (data is List) {
+      return data.map((e) => CodeHighlight.fromJson(e)).toList();
+    } else {
+      print(
+        '${index.getHighlights}: Expected List but got ${data.runtimeType}',
+      );
+      return [];
+    }
   }
 
   @override
