@@ -6,9 +6,9 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
 
-@class HighlightsHighlightsCompanion, HighlightsHighlightsBuilder, HighlightsCodeStructure, HighlightsPhraseLocation, HighlightsCodeHighlight, HighlightsSyntaxLanguage, HighlightsSyntaxTheme, HighlightsKotlinArray<T>, HighlightsCodeSnapshot, HighlightsHighlights, HighlightsBoldHighlight, HighlightsColorHighlight, HighlightsKotlinEnumCompanion, HighlightsKotlinEnum<E>, HighlightsSyntaxLanguageCompanion, HighlightsSyntaxThemeCompanion, HighlightsSyntaxThemes, HighlightsKotlinIntProgressionCompanion, HighlightsKotlinIntIterator, HighlightsKotlinIntProgression, HighlightsKotlinIntRangeCompanion, HighlightsKotlinIntRange;
+@class HighlightsHighlightsCompanion, HighlightsHighlightsBuilder, HighlightsCodeStructure, HighlightsPhraseLocation, HighlightsCodeHighlight, HighlightsSyntaxLanguage, HighlightsSyntaxTheme, HighlightsKotlinArray<T>, HighlightsCodeSnapshot, HighlightsHighlights, HighlightsCodeHighlightCompanion, HighlightsBoldHighlightCompanion, HighlightsBoldHighlight, HighlightsCodeStructureCompanion, HighlightsColorHighlightCompanion, HighlightsColorHighlight, HighlightsPhraseLocationCompanion, HighlightsKotlinEnumCompanion, HighlightsKotlinEnum<E>, HighlightsSyntaxLanguageCompanion, HighlightsSyntaxThemeCompanion, HighlightsSyntaxThemes, HighlightsKotlinIntProgressionCompanion, HighlightsKotlinIntIterator, HighlightsKotlinIntProgression, HighlightsKotlinIntRangeCompanion, HighlightsKotlinIntRange, HighlightsKotlinx_serialization_coreSerializersModule, HighlightsKotlinx_serialization_coreSerialKind, HighlightsKotlinNothing;
 
-@protocol HighlightsKotlinComparable, HighlightsKotlinIterator, HighlightsKotlinIterable, HighlightsKotlinClosedRange, HighlightsKotlinOpenEndRange;
+@protocol HighlightsKotlinx_serialization_coreKSerializer, HighlightsKotlinComparable, HighlightsKotlinIterator, HighlightsKotlinIterable, HighlightsKotlinClosedRange, HighlightsKotlinOpenEndRange, HighlightsKotlinx_serialization_coreEncoder, HighlightsKotlinx_serialization_coreSerialDescriptor, HighlightsKotlinx_serialization_coreSerializationStrategy, HighlightsKotlinx_serialization_coreDecoder, HighlightsKotlinx_serialization_coreDeserializationStrategy, HighlightsKotlinx_serialization_coreCompositeEncoder, HighlightsKotlinAnnotation, HighlightsKotlinx_serialization_coreCompositeDecoder, HighlightsKotlinx_serialization_coreSerializersModuleCollector, HighlightsKotlinKClass, HighlightsKotlinKDeclarationContainer, HighlightsKotlinKAnnotatedElement, HighlightsKotlinKClassifier;
 
 NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic push
@@ -205,15 +205,27 @@ __attribute__((swift_name("CodeSnapshot")))
 @property (readonly) HighlightsCodeStructure *structure __attribute__((swift_name("structure")));
 @end
 
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.Serializable
+*/
 __attribute__((swift_name("CodeHighlight")))
 @interface HighlightsCodeHighlight : HighlightsBase
+@property (class, readonly, getter=companion) HighlightsCodeHighlightCompanion *companion __attribute__((swift_name("companion")));
 @property (readonly) HighlightsPhraseLocation *location __attribute__((swift_name("location")));
 @end
 
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.Serializable
+*/
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("BoldHighlight")))
 @interface HighlightsBoldHighlight : HighlightsCodeHighlight
 - (instancetype)initWithLocation:(HighlightsPhraseLocation *)location __attribute__((swift_name("init(location:)"))) __attribute__((objc_designated_initializer));
+@property (class, readonly, getter=companion) HighlightsBoldHighlightCompanion *companion __attribute__((swift_name("companion")));
 - (HighlightsBoldHighlight *)doCopyLocation:(HighlightsPhraseLocation *)location __attribute__((swift_name("doCopy(location:)")));
 - (BOOL)isEqual:(id _Nullable)other __attribute__((swift_name("isEqual(_:)")));
 - (NSUInteger)hash __attribute__((swift_name("hash()")));
@@ -222,9 +234,36 @@ __attribute__((swift_name("BoldHighlight")))
 @end
 
 __attribute__((objc_subclassing_restricted))
+__attribute__((swift_name("BoldHighlight.Companion")))
+@interface HighlightsBoldHighlightCompanion : HighlightsBase
++ (instancetype)alloc __attribute__((unavailable));
++ (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
++ (instancetype)companion __attribute__((swift_name("init()")));
+@property (class, readonly, getter=shared) HighlightsBoldHighlightCompanion *shared __attribute__((swift_name("shared")));
+- (id<HighlightsKotlinx_serialization_coreKSerializer>)serializer __attribute__((swift_name("serializer()")));
+@end
+
+__attribute__((objc_subclassing_restricted))
+__attribute__((swift_name("CodeHighlight.Companion")))
+@interface HighlightsCodeHighlightCompanion : HighlightsBase
++ (instancetype)alloc __attribute__((unavailable));
++ (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
++ (instancetype)companion __attribute__((swift_name("init()")));
+@property (class, readonly, getter=shared) HighlightsCodeHighlightCompanion *shared __attribute__((swift_name("shared")));
+- (id<HighlightsKotlinx_serialization_coreKSerializer>)serializer __attribute__((swift_name("serializer()")));
+- (id<HighlightsKotlinx_serialization_coreKSerializer>)serializerTypeParamsSerializers:(HighlightsKotlinArray<id<HighlightsKotlinx_serialization_coreKSerializer>> *)typeParamsSerializers __attribute__((swift_name("serializer(typeParamsSerializers:)")));
+@end
+
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.Serializable
+*/
+__attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("CodeStructure")))
 @interface HighlightsCodeStructure : HighlightsBase
 - (instancetype)initWithMarks:(NSSet<HighlightsPhraseLocation *> *)marks punctuations:(NSSet<HighlightsPhraseLocation *> *)punctuations keywords:(NSSet<HighlightsPhraseLocation *> *)keywords strings:(NSSet<HighlightsPhraseLocation *> *)strings literals:(NSSet<HighlightsPhraseLocation *> *)literals comments:(NSSet<HighlightsPhraseLocation *> *)comments multilineComments:(NSSet<HighlightsPhraseLocation *> *)multilineComments annotations:(NSSet<HighlightsPhraseLocation *> *)annotations incremental:(BOOL)incremental __attribute__((swift_name("init(marks:punctuations:keywords:strings:literals:comments:multilineComments:annotations:incremental:)"))) __attribute__((objc_designated_initializer));
+@property (class, readonly, getter=companion) HighlightsCodeStructureCompanion *companion __attribute__((swift_name("companion")));
 - (HighlightsCodeStructure *)doCopyMarks:(NSSet<HighlightsPhraseLocation *> *)marks punctuations:(NSSet<HighlightsPhraseLocation *> *)punctuations keywords:(NSSet<HighlightsPhraseLocation *> *)keywords strings:(NSSet<HighlightsPhraseLocation *> *)strings literals:(NSSet<HighlightsPhraseLocation *> *)literals comments:(NSSet<HighlightsPhraseLocation *> *)comments multilineComments:(NSSet<HighlightsPhraseLocation *> *)multilineComments annotations:(NSSet<HighlightsPhraseLocation *> *)annotations incremental:(BOOL)incremental __attribute__((swift_name("doCopy(marks:punctuations:keywords:strings:literals:comments:multilineComments:annotations:incremental:)")));
 - (BOOL)isEqual:(id _Nullable)other __attribute__((swift_name("isEqual(_:)")));
 - (NSUInteger)hash __attribute__((swift_name("hash()")));
@@ -245,9 +284,25 @@ __attribute__((swift_name("CodeStructure")))
 @end
 
 __attribute__((objc_subclassing_restricted))
+__attribute__((swift_name("CodeStructure.Companion")))
+@interface HighlightsCodeStructureCompanion : HighlightsBase
++ (instancetype)alloc __attribute__((unavailable));
++ (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
++ (instancetype)companion __attribute__((swift_name("init()")));
+@property (class, readonly, getter=shared) HighlightsCodeStructureCompanion *shared __attribute__((swift_name("shared")));
+- (id<HighlightsKotlinx_serialization_coreKSerializer>)serializer __attribute__((swift_name("serializer()")));
+@end
+
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.Serializable
+*/
+__attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("ColorHighlight")))
 @interface HighlightsColorHighlight : HighlightsCodeHighlight
 - (instancetype)initWithLocation:(HighlightsPhraseLocation *)location rgb:(int32_t)rgb __attribute__((swift_name("init(location:rgb:)"))) __attribute__((objc_designated_initializer));
+@property (class, readonly, getter=companion) HighlightsColorHighlightCompanion *companion __attribute__((swift_name("companion")));
 - (HighlightsColorHighlight *)doCopyLocation:(HighlightsPhraseLocation *)location rgb:(int32_t)rgb __attribute__((swift_name("doCopy(location:rgb:)")));
 - (BOOL)isEqual:(id _Nullable)other __attribute__((swift_name("isEqual(_:)")));
 - (NSUInteger)hash __attribute__((swift_name("hash()")));
@@ -257,15 +312,41 @@ __attribute__((swift_name("ColorHighlight")))
 @end
 
 __attribute__((objc_subclassing_restricted))
+__attribute__((swift_name("ColorHighlight.Companion")))
+@interface HighlightsColorHighlightCompanion : HighlightsBase
++ (instancetype)alloc __attribute__((unavailable));
++ (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
++ (instancetype)companion __attribute__((swift_name("init()")));
+@property (class, readonly, getter=shared) HighlightsColorHighlightCompanion *shared __attribute__((swift_name("shared")));
+- (id<HighlightsKotlinx_serialization_coreKSerializer>)serializer __attribute__((swift_name("serializer()")));
+@end
+
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.Serializable
+*/
+__attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("PhraseLocation")))
 @interface HighlightsPhraseLocation : HighlightsBase
 - (instancetype)initWithStart:(int32_t)start end:(int32_t)end __attribute__((swift_name("init(start:end:)"))) __attribute__((objc_designated_initializer));
+@property (class, readonly, getter=companion) HighlightsPhraseLocationCompanion *companion __attribute__((swift_name("companion")));
 - (HighlightsPhraseLocation *)doCopyStart:(int32_t)start end:(int32_t)end __attribute__((swift_name("doCopy(start:end:)")));
 - (BOOL)isEqual:(id _Nullable)other __attribute__((swift_name("isEqual(_:)")));
 - (NSUInteger)hash __attribute__((swift_name("hash()")));
 - (NSString *)description __attribute__((swift_name("description()")));
 @property (readonly) int32_t end __attribute__((swift_name("end")));
 @property (readonly) int32_t start __attribute__((swift_name("start")));
+@end
+
+__attribute__((objc_subclassing_restricted))
+__attribute__((swift_name("PhraseLocation.Companion")))
+@interface HighlightsPhraseLocationCompanion : HighlightsBase
++ (instancetype)alloc __attribute__((unavailable));
++ (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
++ (instancetype)companion __attribute__((swift_name("init()")));
+@property (class, readonly, getter=shared) HighlightsPhraseLocationCompanion *shared __attribute__((swift_name("shared")));
+- (id<HighlightsKotlinx_serialization_coreKSerializer>)serializer __attribute__((swift_name("serializer()")));
 @end
 
 __attribute__((swift_name("KotlinComparable")))
@@ -368,7 +449,8 @@ __attribute__((swift_name("SyntaxThemes")))
 - (HighlightsSyntaxTheme *)atomDarkMode:(BOOL)darkMode __attribute__((swift_name("atom(darkMode:)")));
 - (HighlightsSyntaxTheme *)darculaDarkMode:(BOOL)darkMode __attribute__((swift_name("darcula(darkMode:)")));
 - (HighlightsSyntaxTheme *)defaultDarkMode:(BOOL)darkMode __attribute__((swift_name("default(darkMode:)")));
-- (NSArray<NSString *> *)getNames __attribute__((swift_name("getNames()")));
+- (HighlightsSyntaxTheme * _Nullable)getByNameName:(NSString *)name darkMode:(BOOL)darkMode __attribute__((swift_name("getByName(name:darkMode:)")));
+- (NSArray<NSString *> *)getNamesDarkMode:(BOOL)darkMode __attribute__((swift_name("getNames(darkMode:)")));
 - (HighlightsSyntaxTheme *)matrixDarkMode:(BOOL)darkMode __attribute__((swift_name("matrix(darkMode:)")));
 - (HighlightsSyntaxTheme *)monokaiDarkMode:(BOOL)darkMode __attribute__((swift_name("monokai(darkMode:)")));
 - (HighlightsSyntaxTheme *)notepadDarkMode:(BOOL)darkMode __attribute__((swift_name("notepad(darkMode:)")));
@@ -454,6 +536,7 @@ __attribute__((swift_name("ExtensionsKt")))
 + (BOOL)isIndependentPhrase:(NSString *)receiver code:(NSString *)code index:(int32_t)index __attribute__((swift_name("isIndependentPhrase(_:code:index:)")));
 + (BOOL)isNewLine:(unichar)receiver __attribute__((swift_name("isNewLine(_:)")));
 + (int32_t)lengthToEOF:(NSString *)receiver start:(int32_t)start __attribute__((swift_name("lengthToEOF(_:start:)")));
++ (NSString *)toJson:(NSArray<HighlightsCodeHighlight *> *)receiver __attribute__((swift_name("toJson(_:)")));
 + (NSSet<HighlightsKotlinIntRange *> *)toRangeSet:(NSSet<HighlightsPhraseLocation *> *)receiver __attribute__((swift_name("toRangeSet(_:)")));
 @end
 
@@ -467,6 +550,25 @@ __attribute__((swift_name("KotlinArray")))
 - (id<HighlightsKotlinIterator>)iterator __attribute__((swift_name("iterator()")));
 - (void)setIndex:(int32_t)index value:(T _Nullable)value __attribute__((swift_name("set(index:value:)")));
 @property (readonly) int32_t size __attribute__((swift_name("size")));
+@end
+
+__attribute__((swift_name("Kotlinx_serialization_coreSerializationStrategy")))
+@protocol HighlightsKotlinx_serialization_coreSerializationStrategy
+@required
+- (void)serializeEncoder:(id<HighlightsKotlinx_serialization_coreEncoder>)encoder value:(id _Nullable)value __attribute__((swift_name("serialize(encoder:value:)")));
+@property (readonly) id<HighlightsKotlinx_serialization_coreSerialDescriptor> descriptor __attribute__((swift_name("descriptor")));
+@end
+
+__attribute__((swift_name("Kotlinx_serialization_coreDeserializationStrategy")))
+@protocol HighlightsKotlinx_serialization_coreDeserializationStrategy
+@required
+- (id _Nullable)deserializeDecoder:(id<HighlightsKotlinx_serialization_coreDecoder>)decoder __attribute__((swift_name("deserialize(decoder:)")));
+@property (readonly) id<HighlightsKotlinx_serialization_coreSerialDescriptor> descriptor __attribute__((swift_name("descriptor")));
+@end
+
+__attribute__((swift_name("Kotlinx_serialization_coreKSerializer")))
+@protocol HighlightsKotlinx_serialization_coreKSerializer <HighlightsKotlinx_serialization_coreSerializationStrategy, HighlightsKotlinx_serialization_coreDeserializationStrategy>
+@required
 @end
 
 __attribute__((objc_subclassing_restricted))
@@ -511,6 +613,307 @@ __attribute__((swift_name("KotlinIntRange.Companion")))
 + (instancetype)companion __attribute__((swift_name("init()")));
 @property (class, readonly, getter=shared) HighlightsKotlinIntRangeCompanion *shared __attribute__((swift_name("shared")));
 @property (readonly) HighlightsKotlinIntRange *EMPTY __attribute__((swift_name("EMPTY")));
+@end
+
+__attribute__((swift_name("Kotlinx_serialization_coreEncoder")))
+@protocol HighlightsKotlinx_serialization_coreEncoder
+@required
+- (id<HighlightsKotlinx_serialization_coreCompositeEncoder>)beginCollectionDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor collectionSize:(int32_t)collectionSize __attribute__((swift_name("beginCollection(descriptor:collectionSize:)")));
+- (id<HighlightsKotlinx_serialization_coreCompositeEncoder>)beginStructureDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor __attribute__((swift_name("beginStructure(descriptor:)")));
+- (void)encodeBooleanValue:(BOOL)value __attribute__((swift_name("encodeBoolean(value:)")));
+- (void)encodeByteValue:(int8_t)value __attribute__((swift_name("encodeByte(value:)")));
+- (void)encodeCharValue:(unichar)value __attribute__((swift_name("encodeChar(value:)")));
+- (void)encodeDoubleValue:(double)value __attribute__((swift_name("encodeDouble(value:)")));
+- (void)encodeEnumEnumDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)enumDescriptor index:(int32_t)index __attribute__((swift_name("encodeEnum(enumDescriptor:index:)")));
+- (void)encodeFloatValue:(float)value __attribute__((swift_name("encodeFloat(value:)")));
+- (id<HighlightsKotlinx_serialization_coreEncoder>)encodeInlineDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor __attribute__((swift_name("encodeInline(descriptor:)")));
+- (void)encodeIntValue:(int32_t)value __attribute__((swift_name("encodeInt(value:)")));
+- (void)encodeLongValue:(int64_t)value __attribute__((swift_name("encodeLong(value:)")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+- (void)encodeNotNullMark __attribute__((swift_name("encodeNotNullMark()")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+- (void)encodeNull __attribute__((swift_name("encodeNull()")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+- (void)encodeNullableSerializableValueSerializer:(id<HighlightsKotlinx_serialization_coreSerializationStrategy>)serializer value:(id _Nullable)value __attribute__((swift_name("encodeNullableSerializableValue(serializer:value:)")));
+- (void)encodeSerializableValueSerializer:(id<HighlightsKotlinx_serialization_coreSerializationStrategy>)serializer value:(id _Nullable)value __attribute__((swift_name("encodeSerializableValue(serializer:value:)")));
+- (void)encodeShortValue:(int16_t)value __attribute__((swift_name("encodeShort(value:)")));
+- (void)encodeStringValue:(NSString *)value __attribute__((swift_name("encodeString(value:)")));
+@property (readonly) HighlightsKotlinx_serialization_coreSerializersModule *serializersModule __attribute__((swift_name("serializersModule")));
+@end
+
+__attribute__((swift_name("Kotlinx_serialization_coreSerialDescriptor")))
+@protocol HighlightsKotlinx_serialization_coreSerialDescriptor
+@required
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+- (NSArray<id<HighlightsKotlinAnnotation>> *)getElementAnnotationsIndex:(int32_t)index __attribute__((swift_name("getElementAnnotations(index:)")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+- (id<HighlightsKotlinx_serialization_coreSerialDescriptor>)getElementDescriptorIndex:(int32_t)index __attribute__((swift_name("getElementDescriptor(index:)")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+- (int32_t)getElementIndexName:(NSString *)name __attribute__((swift_name("getElementIndex(name:)")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+- (NSString *)getElementNameIndex:(int32_t)index __attribute__((swift_name("getElementName(index:)")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+- (BOOL)isElementOptionalIndex:(int32_t)index __attribute__((swift_name("isElementOptional(index:)")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+@property (readonly) NSArray<id<HighlightsKotlinAnnotation>> *annotations __attribute__((swift_name("annotations")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+@property (readonly) int32_t elementsCount __attribute__((swift_name("elementsCount")));
+@property (readonly) BOOL isInline __attribute__((swift_name("isInline")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+@property (readonly) BOOL isNullable __attribute__((swift_name("isNullable")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+@property (readonly) HighlightsKotlinx_serialization_coreSerialKind *kind __attribute__((swift_name("kind")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+@property (readonly) NSString *serialName __attribute__((swift_name("serialName")));
+@end
+
+__attribute__((swift_name("Kotlinx_serialization_coreDecoder")))
+@protocol HighlightsKotlinx_serialization_coreDecoder
+@required
+- (id<HighlightsKotlinx_serialization_coreCompositeDecoder>)beginStructureDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor __attribute__((swift_name("beginStructure(descriptor:)")));
+- (BOOL)decodeBoolean __attribute__((swift_name("decodeBoolean()")));
+- (int8_t)decodeByte __attribute__((swift_name("decodeByte()")));
+- (unichar)decodeChar __attribute__((swift_name("decodeChar()")));
+- (double)decodeDouble __attribute__((swift_name("decodeDouble()")));
+- (int32_t)decodeEnumEnumDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)enumDescriptor __attribute__((swift_name("decodeEnum(enumDescriptor:)")));
+- (float)decodeFloat __attribute__((swift_name("decodeFloat()")));
+- (id<HighlightsKotlinx_serialization_coreDecoder>)decodeInlineDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor __attribute__((swift_name("decodeInline(descriptor:)")));
+- (int32_t)decodeInt __attribute__((swift_name("decodeInt()")));
+- (int64_t)decodeLong __attribute__((swift_name("decodeLong()")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+- (BOOL)decodeNotNullMark __attribute__((swift_name("decodeNotNullMark()")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+- (HighlightsKotlinNothing * _Nullable)decodeNull __attribute__((swift_name("decodeNull()")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+- (id _Nullable)decodeNullableSerializableValueDeserializer:(id<HighlightsKotlinx_serialization_coreDeserializationStrategy>)deserializer __attribute__((swift_name("decodeNullableSerializableValue(deserializer:)")));
+- (id _Nullable)decodeSerializableValueDeserializer:(id<HighlightsKotlinx_serialization_coreDeserializationStrategy>)deserializer __attribute__((swift_name("decodeSerializableValue(deserializer:)")));
+- (int16_t)decodeShort __attribute__((swift_name("decodeShort()")));
+- (NSString *)decodeString __attribute__((swift_name("decodeString()")));
+@property (readonly) HighlightsKotlinx_serialization_coreSerializersModule *serializersModule __attribute__((swift_name("serializersModule")));
+@end
+
+__attribute__((swift_name("Kotlinx_serialization_coreCompositeEncoder")))
+@protocol HighlightsKotlinx_serialization_coreCompositeEncoder
+@required
+- (void)encodeBooleanElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index value:(BOOL)value __attribute__((swift_name("encodeBooleanElement(descriptor:index:value:)")));
+- (void)encodeByteElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index value:(int8_t)value __attribute__((swift_name("encodeByteElement(descriptor:index:value:)")));
+- (void)encodeCharElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index value:(unichar)value __attribute__((swift_name("encodeCharElement(descriptor:index:value:)")));
+- (void)encodeDoubleElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index value:(double)value __attribute__((swift_name("encodeDoubleElement(descriptor:index:value:)")));
+- (void)encodeFloatElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index value:(float)value __attribute__((swift_name("encodeFloatElement(descriptor:index:value:)")));
+- (id<HighlightsKotlinx_serialization_coreEncoder>)encodeInlineElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index __attribute__((swift_name("encodeInlineElement(descriptor:index:)")));
+- (void)encodeIntElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index value:(int32_t)value __attribute__((swift_name("encodeIntElement(descriptor:index:value:)")));
+- (void)encodeLongElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index value:(int64_t)value __attribute__((swift_name("encodeLongElement(descriptor:index:value:)")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+- (void)encodeNullableSerializableElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index serializer:(id<HighlightsKotlinx_serialization_coreSerializationStrategy>)serializer value:(id _Nullable)value __attribute__((swift_name("encodeNullableSerializableElement(descriptor:index:serializer:value:)")));
+- (void)encodeSerializableElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index serializer:(id<HighlightsKotlinx_serialization_coreSerializationStrategy>)serializer value:(id _Nullable)value __attribute__((swift_name("encodeSerializableElement(descriptor:index:serializer:value:)")));
+- (void)encodeShortElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index value:(int16_t)value __attribute__((swift_name("encodeShortElement(descriptor:index:value:)")));
+- (void)encodeStringElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index value:(NSString *)value __attribute__((swift_name("encodeStringElement(descriptor:index:value:)")));
+- (void)endStructureDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor __attribute__((swift_name("endStructure(descriptor:)")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+- (BOOL)shouldEncodeElementDefaultDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index __attribute__((swift_name("shouldEncodeElementDefault(descriptor:index:)")));
+@property (readonly) HighlightsKotlinx_serialization_coreSerializersModule *serializersModule __attribute__((swift_name("serializersModule")));
+@end
+
+__attribute__((swift_name("Kotlinx_serialization_coreSerializersModule")))
+@interface HighlightsKotlinx_serialization_coreSerializersModule : HighlightsBase
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+- (void)dumpToCollector:(id<HighlightsKotlinx_serialization_coreSerializersModuleCollector>)collector __attribute__((swift_name("dumpTo(collector:)")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+- (id<HighlightsKotlinx_serialization_coreKSerializer> _Nullable)getContextualKClass:(id<HighlightsKotlinKClass>)kClass typeArgumentsSerializers:(NSArray<id<HighlightsKotlinx_serialization_coreKSerializer>> *)typeArgumentsSerializers __attribute__((swift_name("getContextual(kClass:typeArgumentsSerializers:)")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+- (id<HighlightsKotlinx_serialization_coreSerializationStrategy> _Nullable)getPolymorphicBaseClass:(id<HighlightsKotlinKClass>)baseClass value:(id)value __attribute__((swift_name("getPolymorphic(baseClass:value:)")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+- (id<HighlightsKotlinx_serialization_coreDeserializationStrategy> _Nullable)getPolymorphicBaseClass:(id<HighlightsKotlinKClass>)baseClass serializedClassName:(NSString * _Nullable)serializedClassName __attribute__((swift_name("getPolymorphic(baseClass:serializedClassName:)")));
+@end
+
+__attribute__((swift_name("KotlinAnnotation")))
+@protocol HighlightsKotlinAnnotation
+@required
+@end
+
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+__attribute__((swift_name("Kotlinx_serialization_coreSerialKind")))
+@interface HighlightsKotlinx_serialization_coreSerialKind : HighlightsBase
+- (NSUInteger)hash __attribute__((swift_name("hash()")));
+- (NSString *)description __attribute__((swift_name("description()")));
+@end
+
+__attribute__((swift_name("Kotlinx_serialization_coreCompositeDecoder")))
+@protocol HighlightsKotlinx_serialization_coreCompositeDecoder
+@required
+- (BOOL)decodeBooleanElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index __attribute__((swift_name("decodeBooleanElement(descriptor:index:)")));
+- (int8_t)decodeByteElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index __attribute__((swift_name("decodeByteElement(descriptor:index:)")));
+- (unichar)decodeCharElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index __attribute__((swift_name("decodeCharElement(descriptor:index:)")));
+- (int32_t)decodeCollectionSizeDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor __attribute__((swift_name("decodeCollectionSize(descriptor:)")));
+- (double)decodeDoubleElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index __attribute__((swift_name("decodeDoubleElement(descriptor:index:)")));
+- (int32_t)decodeElementIndexDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor __attribute__((swift_name("decodeElementIndex(descriptor:)")));
+- (float)decodeFloatElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index __attribute__((swift_name("decodeFloatElement(descriptor:index:)")));
+- (id<HighlightsKotlinx_serialization_coreDecoder>)decodeInlineElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index __attribute__((swift_name("decodeInlineElement(descriptor:index:)")));
+- (int32_t)decodeIntElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index __attribute__((swift_name("decodeIntElement(descriptor:index:)")));
+- (int64_t)decodeLongElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index __attribute__((swift_name("decodeLongElement(descriptor:index:)")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+- (id _Nullable)decodeNullableSerializableElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index deserializer:(id<HighlightsKotlinx_serialization_coreDeserializationStrategy>)deserializer previousValue:(id _Nullable)previousValue __attribute__((swift_name("decodeNullableSerializableElement(descriptor:index:deserializer:previousValue:)")));
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+- (BOOL)decodeSequentially __attribute__((swift_name("decodeSequentially()")));
+- (id _Nullable)decodeSerializableElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index deserializer:(id<HighlightsKotlinx_serialization_coreDeserializationStrategy>)deserializer previousValue:(id _Nullable)previousValue __attribute__((swift_name("decodeSerializableElement(descriptor:index:deserializer:previousValue:)")));
+- (int16_t)decodeShortElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index __attribute__((swift_name("decodeShortElement(descriptor:index:)")));
+- (NSString *)decodeStringElementDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor index:(int32_t)index __attribute__((swift_name("decodeStringElement(descriptor:index:)")));
+- (void)endStructureDescriptor:(id<HighlightsKotlinx_serialization_coreSerialDescriptor>)descriptor __attribute__((swift_name("endStructure(descriptor:)")));
+@property (readonly) HighlightsKotlinx_serialization_coreSerializersModule *serializersModule __attribute__((swift_name("serializersModule")));
+@end
+
+__attribute__((objc_subclassing_restricted))
+__attribute__((swift_name("KotlinNothing")))
+@interface HighlightsKotlinNothing : HighlightsBase
+@end
+
+
+/**
+ * @note annotations
+ *   kotlinx.serialization.ExperimentalSerializationApi
+*/
+__attribute__((swift_name("Kotlinx_serialization_coreSerializersModuleCollector")))
+@protocol HighlightsKotlinx_serialization_coreSerializersModuleCollector
+@required
+- (void)contextualKClass:(id<HighlightsKotlinKClass>)kClass provider:(id<HighlightsKotlinx_serialization_coreKSerializer> (^)(NSArray<id<HighlightsKotlinx_serialization_coreKSerializer>> *))provider __attribute__((swift_name("contextual(kClass:provider:)")));
+- (void)contextualKClass:(id<HighlightsKotlinKClass>)kClass serializer:(id<HighlightsKotlinx_serialization_coreKSerializer>)serializer __attribute__((swift_name("contextual(kClass:serializer:)")));
+- (void)polymorphicBaseClass:(id<HighlightsKotlinKClass>)baseClass actualClass:(id<HighlightsKotlinKClass>)actualClass actualSerializer:(id<HighlightsKotlinx_serialization_coreKSerializer>)actualSerializer __attribute__((swift_name("polymorphic(baseClass:actualClass:actualSerializer:)")));
+- (void)polymorphicDefaultBaseClass:(id<HighlightsKotlinKClass>)baseClass defaultDeserializerProvider:(id<HighlightsKotlinx_serialization_coreDeserializationStrategy> _Nullable (^)(NSString * _Nullable))defaultDeserializerProvider __attribute__((swift_name("polymorphicDefault(baseClass:defaultDeserializerProvider:)"))) __attribute__((deprecated("Deprecated in favor of function with more precise name: polymorphicDefaultDeserializer")));
+- (void)polymorphicDefaultDeserializerBaseClass:(id<HighlightsKotlinKClass>)baseClass defaultDeserializerProvider:(id<HighlightsKotlinx_serialization_coreDeserializationStrategy> _Nullable (^)(NSString * _Nullable))defaultDeserializerProvider __attribute__((swift_name("polymorphicDefaultDeserializer(baseClass:defaultDeserializerProvider:)")));
+- (void)polymorphicDefaultSerializerBaseClass:(id<HighlightsKotlinKClass>)baseClass defaultSerializerProvider:(id<HighlightsKotlinx_serialization_coreSerializationStrategy> _Nullable (^)(id))defaultSerializerProvider __attribute__((swift_name("polymorphicDefaultSerializer(baseClass:defaultSerializerProvider:)")));
+@end
+
+__attribute__((swift_name("KotlinKDeclarationContainer")))
+@protocol HighlightsKotlinKDeclarationContainer
+@required
+@end
+
+__attribute__((swift_name("KotlinKAnnotatedElement")))
+@protocol HighlightsKotlinKAnnotatedElement
+@required
+@end
+
+
+/**
+ * @note annotations
+ *   kotlin.SinceKotlin(version="1.1")
+*/
+__attribute__((swift_name("KotlinKClassifier")))
+@protocol HighlightsKotlinKClassifier
+@required
+@end
+
+__attribute__((swift_name("KotlinKClass")))
+@protocol HighlightsKotlinKClass <HighlightsKotlinKDeclarationContainer, HighlightsKotlinKAnnotatedElement, HighlightsKotlinKClassifier>
+@required
+
+/**
+ * @note annotations
+ *   kotlin.SinceKotlin(version="1.1")
+*/
+- (BOOL)isInstanceValue:(id _Nullable)value __attribute__((swift_name("isInstance(value:)")));
+@property (readonly) NSString * _Nullable qualifiedName __attribute__((swift_name("qualifiedName")));
+@property (readonly) NSString * _Nullable simpleName __attribute__((swift_name("simpleName")));
 @end
 
 #pragma pop_macro("_Nullable_result")

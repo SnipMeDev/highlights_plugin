@@ -23,7 +23,7 @@ public class SwiftHighlightsPlugin: NSObject, FlutterPlugin {
           let languages = SyntaxLanguage.companion.getNames()
           result(languages)
       case "getThemes":
-          let themes = SyntaxThemes().getNames()
+          let themes = SyntaxThemes().getNames(darkMode: false)
           result(themes)
       case "getHighlights":
           let map = call.arguments as! Dictionary<String, Any>
@@ -34,9 +34,7 @@ public class SwiftHighlightsPlugin: NSObject, FlutterPlugin {
           let language = SyntaxLanguage.companion.getByName(name: languageArg)
           
           let themeArg = map["theme"] as! String
-          let theme = SyntaxThemes.shared.light.first(where: { (key, _) in
-              key.lowercased() == themeArg.lowercased()
-          })?.value
+          let theme = SyntaxThemes().getByName(name: themeArg, darkMode: false)
 
           highlights = Highlights.Builder(
             code: codeArg,
@@ -45,10 +43,9 @@ public class SwiftHighlightsPlugin: NSObject, FlutterPlugin {
             emphasisLocations: [] // TODO Handle
           ).build()
 
-          let encoder = JSONEncoder()
-          let json = try encoder.encode(highlights)
-
-          result(json)
+          let highlightList = highlights.getHighlights();
+          
+          result(ExtensionsKt.toJson(highlightList))
       default:
           result(["No results"])
       }

@@ -43,9 +43,7 @@ class HighlightsPlugin : FlutterPlugin, MethodCallHandler {
                 val highlightList = highlights.getHighlights()
                 result.success(highlightList.toJson())
             }
-
             "getLanguages" -> result.success(SyntaxLanguage.getNames())
-
             "getThemes" -> result.success(SyntaxThemes.getNames())
             else -> {
                 result.notImplemented()
