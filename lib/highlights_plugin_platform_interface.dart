@@ -49,4 +49,9 @@ abstract class HighlightsPluginPlatform extends PlatformInterface
   Future<List<String>> getThemes() {
     throw UnimplementedError('$getThemes has not been implemented.');
   }
+
+  @override
+  Future<void> useDarkMode(bool useDarkMode) {
+    throw UnimplementedError('$useDarkMode has not been implemented.');
+  }
 }

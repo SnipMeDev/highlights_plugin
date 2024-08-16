@@ -12,4 +12,6 @@ abstract interface class HighlightsInterface {
   Future<List<String>> getLanguages();
 
   Future<List<String>> getThemes();
+
+  Future<void> useDarkMode(bool useDarkMode);
 }

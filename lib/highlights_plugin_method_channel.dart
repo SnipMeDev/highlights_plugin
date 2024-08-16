@@ -91,6 +91,11 @@ class MethodChannelHighlightsPlugin extends HighlightsPluginPlatform
     }
   }
 
+  @override
+  Future<void> useDarkMode(bool useDarkMode) async {
+    await methodChannel.invokeMethod(index.useDarkMode, useDarkMode);
+  }
+
   Future<String> _getLanguage(String expected) async {
     final data = _cachedLanguages ?? (await getLanguages());
     final result = data.getMatching(expected);

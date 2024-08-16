@@ -21,6 +21,7 @@ class HighlightsPlugin : FlutterPlugin, MethodCallHandler {
     /// when the Flutter Engine is detached from the Activity
     private lateinit var channel: MethodChannel
     private lateinit var highlights: Highlights
+    private var useDarkMode = false
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "highlights_plugin")
@@ -28,15 +29,14 @@ class HighlightsPlugin : FlutterPlugin, MethodCallHandler {
     }
 
     override fun onMethodCall(call: MethodCall, result: Result) {
-        println("Method call ${call.method}")
         when (call.method) {
             "getHighlights" -> {
                 highlights = Highlights.Builder(
                     code = call.argument("code") ?: "",
                     language = SyntaxLanguage.getByName(call.argument("language") ?: "")
                         ?: SyntaxLanguage.DEFAULT,
-                    theme = SyntaxThemes.getByName(call.argument("theme") ?: "")
-                        ?: SyntaxThemes.default(),
+                    theme = SyntaxThemes.getByName(call.argument("theme") ?: "", useDarkMode)
+                        ?: SyntaxThemes.default(darkMode = useDarkMode),
                     emphasisLocations = call.argument("emphasisLocations") ?: emptyList()
                 ).build()
 
@@ -44,7 +44,11 @@ class HighlightsPlugin : FlutterPlugin, MethodCallHandler {
                 result.success(highlightList.toJson())
             }
             "getLanguages" -> result.success(SyntaxLanguage.getNames())
-            "getThemes" -> result.success(SyntaxThemes.getNames())
+            "getThemes" -> result.success(SyntaxThemes.getNames(useDarkMode))
+            "setDarkMode" -> {
+                useDarkMode = call.argument("useDarkMode") ?: false
+                result.success(null)
+            }
             else -> {
                 result.notImplemented()
             }

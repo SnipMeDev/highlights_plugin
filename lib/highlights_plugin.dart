@@ -53,6 +53,16 @@ class HighlightsPlugin implements HighlightsInterface {
     }
   }
 
+  @override
+  Future<void> useDarkMode(bool useDarkMode) {
+    try {
+      return HighlightsPluginPlatform.instance.useDarkMode(useDarkMode);
+    } catch (e, st) {
+      _printDebugInfo(methods.useDarkMode, e, st);
+      return Future.value();
+    }
+  }
+
   void _printDebugInfo(String method, Object error, StackTrace stackTrace) {
     if (debug) {
       print('HighlightsPlugin $method error: $error');
