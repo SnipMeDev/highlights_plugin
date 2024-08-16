@@ -1,3 +1,7 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+### Added
+
+- `getLanguages` method
+- `getThemes` method
+- `getHighlights` method

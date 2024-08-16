@@ -13,12 +13,16 @@ import 'highlights_plugin_platform_interface.dart';
 /// An implementation of [HighlightsPluginPlatform] that uses method channels.
 class MethodChannelHighlightsPlugin extends HighlightsPluginPlatform
     implements HighlightsInterface {
+  MethodChannelHighlightsPlugin({required this.debug});
+
   /// The method channel used to interact with the native platform.
   @visibleForTesting
   final methodChannel = const MethodChannel('highlights_plugin');
 
-  List<String>? _languages;
-  List<String>? _themes;
+  final bool debug;
+
+  List<String>? _cachedLanguages;
+  List<String>? _cachedThemes;
 
   @override
   Future<List<CodeHighlight>> getHighlights(
@@ -44,7 +48,7 @@ class MethodChannelHighlightsPlugin extends HighlightsPluginPlatform
     if (data is List) {
       return data.map((e) => CodeHighlight.fromJson(e)).toList();
     } else {
-      print(
+      _debugPrint(
         '${index.getHighlights}: Expected List but got ${data.runtimeType}',
       );
       return [];
@@ -53,16 +57,16 @@ class MethodChannelHighlightsPlugin extends HighlightsPluginPlatform
 
   @override
   Future<List<String>> getLanguages() async {
-    if (_languages != null) return _languages!;
+    if (_cachedLanguages != null) return _cachedLanguages!;
 
     final result = await methodChannel.invokeMethod(index.getLanguages);
 
     if (result is List) {
       final output = result.map((data) => data.toString()).toList();
-      _languages = output;
+      _cachedLanguages = output;
       return output;
     } else {
-      print(
+      _debugPrint(
         '${index.getLanguages}: Expected List but got ${result.runtimeType}',
       );
       return [];
@@ -71,30 +75,38 @@ class MethodChannelHighlightsPlugin extends HighlightsPluginPlatform
 
   @override
   Future<List<String>> getThemes() async {
-    if (_themes != null) return _themes!;
+    if (_cachedThemes != null) return _cachedThemes!;
 
     final result = await methodChannel.invokeMethod(index.getThemes);
 
     if (result is List) {
       final output = result.map((e) => e.toString()).toList();
-      _themes = output;
+      _cachedThemes = output;
       return output;
     } else {
-      print('${index.getThemes}: Expected List but got ${result.runtimeType}');
+      _debugPrint(
+        '${index.getThemes}: Expected List but got ${result.runtimeType}',
+      );
       return [];
     }
   }
 
   Future<String> _getLanguage(String expected) async {
-    final data = _languages ?? (await getLanguages());
+    final data = _cachedLanguages ?? (await getLanguages());
     final result = data.getMatching(expected);
     return result ?? data.first;
   }
 
   Future<String> _getTheme(String expected) async {
-    final data = _themes ?? (await getThemes());
+    final data = _cachedThemes ?? (await getThemes());
     final result = data.getMatching(expected);
     return result ?? data.first;
+  }
+
+  void _debugPrint(String message) {
+    if (debug) {
+      print(message);
+    }
   }
 }
 

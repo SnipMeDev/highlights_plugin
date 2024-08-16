@@ -13,7 +13,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final _highlightsPlugin = HighlightsPlugin();
+  final _highlightsPlugin = HighlightsPlugin(debug: true);
 
   String? _code;
   String? _language;

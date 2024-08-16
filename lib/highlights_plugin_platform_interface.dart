@@ -12,7 +12,10 @@ abstract class HighlightsPluginPlatform extends PlatformInterface
 
   static final Object _token = Object();
 
-  static HighlightsPluginPlatform _instance = MethodChannelHighlightsPlugin();
+  static bool debug = false;
+
+  static HighlightsPluginPlatform _instance =
+      MethodChannelHighlightsPlugin(debug: debug);
 
   /// The default instance of [HighlightsPluginPlatform] to use.
   ///
