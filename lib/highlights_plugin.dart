@@ -43,7 +43,6 @@ class HighlightsPlugin implements HighlightsInterface {
     }
   }
 
-  // TODO Create release 0.0.1 and 0.0.2
   @override
   Future<List<String>> getThemes() async {
     try {
