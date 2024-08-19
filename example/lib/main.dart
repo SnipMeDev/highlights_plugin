@@ -79,13 +79,15 @@ class _MyAppState extends State<MyApp> {
             )
           ],
         ),
-        // TODO Add theme switcher
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              _ThemeSwitchRow(
+                onChange: (isDark) => _highlightsPlugin.useDarkMode(isDark),
+              ),
               FutureDropdown(
                 selected: _language,
                 future: _highlightsPlugin.getLanguages(),
@@ -101,6 +103,42 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _ThemeSwitchRow extends StatefulWidget {
+  const _ThemeSwitchRow({required this.onChange});
+
+  final void Function(bool) onChange;
+
+  @override
+  State<_ThemeSwitchRow> createState() => _ThemeSwitchRowState();
+}
+
+class _ThemeSwitchRowState extends State<_ThemeSwitchRow> {
+  var isDark = false;
+
+  @override
+  Widget build(BuildContext context) {
+
+    void onChanged(bool value) {
+      widget.onChange(value);
+      setState(() {
+        isDark = value;
+      });
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        const Icon(Icons.brightness_4),
+        Switch(
+          value: isDark,
+          onChanged: (isDark) => onChanged(isDark),
+        ),
+        const Icon(Icons.brightness_2),
+      ],
     );
   }
 }
