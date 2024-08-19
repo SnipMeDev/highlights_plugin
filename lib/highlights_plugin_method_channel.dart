@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:highlights_plugin/highlights_interface.dart';
 import 'package:highlights_plugin/model/code_highlight.dart';
 import 'package:highlights_plugin/model/phrase_location.dart';
-import 'package:highlights_plugin/method_index.dart' as index;
+import 'package:highlights_plugin/method_index.dart' as methods;
 import 'package:collection/collection.dart';
 
 import 'highlights_plugin_platform_interface.dart';
@@ -39,7 +39,7 @@ class MethodChannelHighlightsPlugin extends HighlightsPluginPlatform
     };
 
     final json = await methodChannel.invokeMethod(
-      index.getHighlights,
+      methods.getHighlights,
       arguments,
     );
 
@@ -49,7 +49,7 @@ class MethodChannelHighlightsPlugin extends HighlightsPluginPlatform
       return data.map((e) => CodeHighlight.fromJson(e)).toList();
     } else {
       _debugPrint(
-        '${index.getHighlights}: Expected List but got ${data.runtimeType}',
+        '${methods.getHighlights}: Expected List but got ${data.runtimeType}',
       );
       return [];
     }
@@ -59,7 +59,7 @@ class MethodChannelHighlightsPlugin extends HighlightsPluginPlatform
   Future<List<String>> getLanguages() async {
     if (_cachedLanguages != null) return _cachedLanguages!;
 
-    final result = await methodChannel.invokeMethod(index.getLanguages);
+    final result = await methodChannel.invokeMethod(methods.getLanguages);
 
     if (result is List) {
       final output = result.map((data) => data.toString()).toList();
@@ -67,7 +67,7 @@ class MethodChannelHighlightsPlugin extends HighlightsPluginPlatform
       return output;
     } else {
       _debugPrint(
-        '${index.getLanguages}: Expected List but got ${result.runtimeType}',
+        '${methods.getLanguages}: Expected List but got ${result.runtimeType}',
       );
       return [];
     }
@@ -77,7 +77,7 @@ class MethodChannelHighlightsPlugin extends HighlightsPluginPlatform
   Future<List<String>> getThemes() async {
     if (_cachedThemes != null) return _cachedThemes!;
 
-    final result = await methodChannel.invokeMethod(index.getThemes);
+    final result = await methodChannel.invokeMethod(methods.getThemes);
 
     if (result is List) {
       final output = result.map((e) => e.toString()).toList();
@@ -85,15 +85,18 @@ class MethodChannelHighlightsPlugin extends HighlightsPluginPlatform
       return output;
     } else {
       _debugPrint(
-        '${index.getThemes}: Expected List but got ${result.runtimeType}',
+        '${methods.getThemes}: Expected List but got ${result.runtimeType}',
       );
       return [];
     }
   }
 
   @override
-  Future<void> useDarkMode(bool useDarkMode) async {
-    await methodChannel.invokeMethod(index.useDarkMode, useDarkMode);
+  Future<void> setDarkMode(bool useDarkMode) async {
+    await methodChannel.invokeMethod(
+      methods.setDarkMode,
+      {"useDarkMode": useDarkMode},
+    );
   }
 
   Future<String> _getLanguage(String expected) async {

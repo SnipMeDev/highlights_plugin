@@ -35,7 +35,7 @@ public class SwiftHighlightsPlugin: NSObject, FlutterPlugin {
           let language = SyntaxLanguage.companion.getByName(name: languageArg)
           
           let themeArg = map["theme"] as! String
-          let theme = SyntaxThemes().getByName(name: themeArg, darkMode: false)
+          let theme = SyntaxThemes().getByName(name: themeArg, darkMode: useDarkMode)
 
           updateInstance(
             code: codeArg,
@@ -47,6 +47,9 @@ public class SwiftHighlightsPlugin: NSObject, FlutterPlugin {
           let highlightList = highlights.getHighlights();
           
           result(ExtensionsKt.toJson(highlightList))
+      case "setDarkMode":
+          let map = call.arguments as! Dictionary<String, Any>
+          useDarkMode = map["useDarkMode"] as? Bool ?? false
       default:
           result(["No results"])
       }

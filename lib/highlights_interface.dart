@@ -13,5 +13,5 @@ abstract interface class HighlightsInterface {
 
   Future<List<String>> getThemes();
 
-  Future<void> useDarkMode(bool useDarkMode);
+  Future<void> setDarkMode(bool useDarkMode);
 }

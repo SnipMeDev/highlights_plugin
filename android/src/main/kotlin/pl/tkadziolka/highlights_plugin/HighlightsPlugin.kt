@@ -42,8 +42,8 @@ class HighlightsPlugin : FlutterPlugin, MethodCallHandler {
                 result.success(highlightList.toJson())
             }
 
-            "getLanguages" -> result.success(Highlights.languages())
-            "getThemes" -> result.success(Highlights.themes(useDarkMode))
+            "getLanguages" -> result.success(SyntaxLanguage.getNames())
+            "getThemes" -> result.success(SyntaxThemes.getNames(useDarkMode))
             "setDarkMode" -> {
                 useDarkMode = call.argument("useDarkMode") ?: false
                 result.success(null)

@@ -54,11 +54,11 @@ class HighlightsPlugin implements HighlightsInterface {
   }
 
   @override
-  Future<void> useDarkMode(bool useDarkMode) {
+  Future<void> setDarkMode(bool useDarkMode) {
     try {
-      return HighlightsPluginPlatform.instance.useDarkMode(useDarkMode);
+      return HighlightsPluginPlatform.instance.setDarkMode(useDarkMode);
     } catch (e, st) {
-      _printDebugInfo(methods.useDarkMode, e, st);
+      _printDebugInfo(methods.setDarkMode, e, st);
       return Future.value();
     }
   }

@@ -20,6 +20,11 @@ class _MyAppState extends State<MyApp> {
   String? _theme;
   List<String> _highlights = [];
 
+  Future<void> _updateDarkMode(bool isDark) async {
+    await _highlightsPlugin.setDarkMode(isDark);
+    _updateHighlights(_code ?? '');
+  }
+
   void _updateLanguage(String language) {
     setState(() {
       _language = language;
@@ -86,7 +91,7 @@ class _MyAppState extends State<MyApp> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               _ThemeSwitchRow(
-                onChange: (isDark) => _highlightsPlugin.useDarkMode(isDark),
+                onChange: (isDark) => _updateDarkMode(isDark),
               ),
               FutureDropdown(
                 selected: _language,
