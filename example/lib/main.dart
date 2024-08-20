@@ -64,15 +64,9 @@ class _MyAppState extends State<MyApp> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              child: TextField(
-                onChanged: _updateHighlights,
-                maxLines: 20,
-                keyboardType: TextInputType.multiline,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ),
+                child: _EditableTextField(
+              onChange: (code) => _updateHighlights(code),
+            )),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -108,6 +102,46 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _EditableTextField extends StatelessWidget {
+  const _EditableTextField({
+    required this.onChange,
+  });
+
+  final void Function(String) onChange;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      onChanged: onChange,
+      maxLines: 20,
+      keyboardType: TextInputType.multiline,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+      ),
+      contextMenuBuilder: (context, state) {
+        final TextEditingValue value = state.textEditingValue;
+        final List<ContextMenuButtonItem> buttonItems = state.contextMenuButtonItems;
+        final selected = value.selection.textInside(value.text);
+
+        buttonItems.insert(
+          0,
+          ContextMenuButtonItem(
+            label: 'Bold',
+            onPressed: () {
+              ContextMenuController.removeAny();
+              print('Bold word $selected');
+            },
+          ),
+        );
+        return AdaptiveTextSelectionToolbar.buttonItems(
+          anchors: state.contextMenuAnchors,
+          buttonItems: buttonItems,
+        );
+      },
     );
   }
 }
