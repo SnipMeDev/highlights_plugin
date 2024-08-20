@@ -1,12 +1,14 @@
 package pl.tkadziolka.highlights_plugin
 
 import dev.snipme.highlights.Highlights
+import dev.snipme.highlights.internal.phraseLocationSetFromJson
 import dev.snipme.highlights.internal.toJson
 import dev.snipme.highlights.model.PhraseLocation
 import dev.snipme.highlights.model.SyntaxLanguage
 import dev.snipme.highlights.model.SyntaxTheme
 import dev.snipme.highlights.model.SyntaxThemes
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.plugin.common.JSONUtil
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
@@ -28,6 +30,10 @@ class HighlightsPlugin : FlutterPlugin, MethodCallHandler {
         highlights = Highlights.default()
     }
 
+    override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
+        channel.setMethodCallHandler(null)
+    }
+
     override fun onMethodCall(call: MethodCall, result: Result) {
         when (call.method) {
             "getHighlights" -> {
@@ -35,7 +41,7 @@ class HighlightsPlugin : FlutterPlugin, MethodCallHandler {
                     code = call.argument("code"),
                     language = SyntaxLanguage.getByName(call.argument("language") ?: ""),
                     theme = SyntaxThemes.getByName(call.argument("theme") ?: "", useDarkMode),
-                    emphasisLocations = call.argument("emphasisLocations")
+                    emphasisLocations = tryGetEmphasisFromJson(call.argument("emphasisLocations"))
                 )
 
                 val highlightList = highlights.getHighlights()
@@ -72,7 +78,8 @@ class HighlightsPlugin : FlutterPlugin, MethodCallHandler {
         }
     }
 
-    override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-        channel.setMethodCallHandler(null)
+    fun tryGetEmphasisFromJson(json: String?): List<PhraseLocation> {
+        if (json == null) return emptyList()
+        return json.phraseLocationSetFromJson().toList()
     }
 }

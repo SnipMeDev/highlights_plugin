@@ -35,7 +35,7 @@ class MethodChannelHighlightsPlugin extends HighlightsPluginPlatform
       "code": code,
       "language": (await _getLanguage(language)),
       "theme": (await _getTheme(theme)),
-      "emphasisLocations": emphasisLocations,
+      "emphasisLocations": jsonEncode(emphasisLocations),
     };
 
     final json = await methodChannel.invokeMethod(

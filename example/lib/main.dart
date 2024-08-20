@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:highlights_plugin/highlights_plugin.dart';
+import 'package:highlights_plugin/model/phrase_location.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,6 +20,7 @@ class _MyAppState extends State<MyApp> {
   String? _language;
   String? _theme;
   List<String> _highlights = [];
+  List<PhraseLocation> _emphasis = [];
 
   Future<void> _updateDarkMode(bool isDark) async {
     _highlightsPlugin.setDarkMode(isDark);
@@ -45,12 +47,17 @@ class _MyAppState extends State<MyApp> {
       _code ?? '',
       _language ?? '',
       _theme ?? '',
-      [],
+      _emphasis,
     ).then((value) {
       setState(() {
         _highlights = value.map((highlight) => highlight.toString()).toList();
       });
     });
+  }
+
+  void _addEmphasis(PhraseLocation location) {
+    _emphasis.add(location);
+    _updateHighlights(_code ?? '');
   }
 
   @override
@@ -64,9 +71,14 @@ class _MyAppState extends State<MyApp> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-                child: _EditableTextField(
-              onChange: (code) => _updateHighlights(code),
-            )),
+              child: _EditableTextField(
+                onChange: (code) => _updateHighlights(code),
+                onBold: (location) {
+                  print('Bold word ${location.start} ${location.end}');
+                  _addEmphasis(location);
+                },
+              ),
+            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -109,9 +121,11 @@ class _MyAppState extends State<MyApp> {
 class _EditableTextField extends StatelessWidget {
   const _EditableTextField({
     required this.onChange,
+    required this.onBold,
   });
 
   final void Function(String) onChange;
+  final void Function(PhraseLocation) onBold;
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +138,8 @@ class _EditableTextField extends StatelessWidget {
       ),
       contextMenuBuilder: (context, state) {
         final TextEditingValue value = state.textEditingValue;
-        final List<ContextMenuButtonItem> buttonItems = state.contextMenuButtonItems;
+        final List<ContextMenuButtonItem> buttonItems =
+            state.contextMenuButtonItems;
         final selected = value.selection.textInside(value.text);
 
         buttonItems.insert(
@@ -133,6 +148,8 @@ class _EditableTextField extends StatelessWidget {
             label: 'Bold',
             onPressed: () {
               ContextMenuController.removeAny();
+              final range = value.selection;
+              onBold(PhraseLocation(start: range.start, end: range.end));
               print('Bold word $selected');
             },
           ),
