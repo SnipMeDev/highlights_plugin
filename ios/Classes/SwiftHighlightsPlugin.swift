@@ -50,6 +50,7 @@ public class SwiftHighlightsPlugin: NSObject, FlutterPlugin {
       case "setDarkMode":
           let map = call.arguments as! Dictionary<String, Any>
           useDarkMode = map["useDarkMode"] as? Bool ?? false
+          result(nil)
       default:
           result(["No results"])
       }
