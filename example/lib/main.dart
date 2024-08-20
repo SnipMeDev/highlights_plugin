@@ -20,6 +20,11 @@ class _MyAppState extends State<MyApp> {
   String? _theme;
   List<String> _highlights = [];
 
+  Future<void> _updateDarkMode(bool isDark) async {
+    _highlightsPlugin.setDarkMode(isDark);
+    _updateHighlights(_code ?? '');
+  }
+
   void _updateLanguage(String language) {
     setState(() {
       _language = language;
@@ -36,15 +41,15 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _updateHighlights(String code) async {
     _code = code;
-    final highlightList = await _highlightsPlugin.getHighlights(
+    _highlightsPlugin.getHighlights(
       _code ?? '',
       _language ?? '',
       _theme ?? '',
       [],
-    );
-    setState(() {
-      _highlights =
-          highlightList.map((highlight) => highlight.toString()).toList();
+    ).then((value) {
+      setState(() {
+        _highlights = value.map((highlight) => highlight.toString()).toList();
+      });
     });
   }
 
@@ -79,13 +84,15 @@ class _MyAppState extends State<MyApp> {
             )
           ],
         ),
-        // TODO Add theme switcher
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              _ThemeSwitchRow(
+                onChange: (isDark) => _updateDarkMode(isDark),
+              ),
               FutureDropdown(
                 selected: _language,
                 future: _highlightsPlugin.getLanguages(),
@@ -101,6 +108,41 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _ThemeSwitchRow extends StatefulWidget {
+  const _ThemeSwitchRow({required this.onChange});
+
+  final void Function(bool) onChange;
+
+  @override
+  State<_ThemeSwitchRow> createState() => _ThemeSwitchRowState();
+}
+
+class _ThemeSwitchRowState extends State<_ThemeSwitchRow> {
+  var isDark = false;
+
+  @override
+  Widget build(BuildContext context) {
+    void onChanged(bool value) {
+      widget.onChange(value);
+      setState(() {
+        isDark = value;
+      });
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        const Icon(Icons.brightness_4),
+        Switch(
+          value: isDark,
+          onChanged: (isDark) => onChanged(isDark),
+        ),
+        const Icon(Icons.brightness_2),
+      ],
     );
   }
 }
