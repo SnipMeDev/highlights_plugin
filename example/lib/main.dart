@@ -21,7 +21,7 @@ class _MyAppState extends State<MyApp> {
   List<String> _highlights = [];
 
   Future<void> _updateDarkMode(bool isDark) async {
-    await _highlightsPlugin.setDarkMode(isDark);
+    _highlightsPlugin.setDarkMode(isDark);
     _updateHighlights(_code ?? '');
   }
 
@@ -41,15 +41,15 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _updateHighlights(String code) async {
     _code = code;
-    final highlightList = await _highlightsPlugin.getHighlights(
+    _highlightsPlugin.getHighlights(
       _code ?? '',
       _language ?? '',
       _theme ?? '',
       [],
-    );
-    setState(() {
-      _highlights =
-          highlightList.map((highlight) => highlight.toString()).toList();
+    ).then((value) {
+      setState(() {
+        _highlights = value.map((highlight) => highlight.toString()).toList();
+      });
     });
   }
 
@@ -126,7 +126,6 @@ class _ThemeSwitchRowState extends State<_ThemeSwitchRow> {
 
   @override
   Widget build(BuildContext context) {
-
     void onChanged(bool value) {
       widget.onChange(value);
       setState(() {
