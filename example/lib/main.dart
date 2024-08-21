@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:highlights_plugin/highlights_plugin.dart';
+import 'package:highlights_plugin/model/phrase_location.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,6 +20,7 @@ class _MyAppState extends State<MyApp> {
   String? _language;
   String? _theme;
   List<String> _highlights = [];
+  final List<PhraseLocation> _emphasis = [];
 
   Future<void> _updateDarkMode(bool isDark) async {
     _highlightsPlugin.setDarkMode(isDark);
@@ -45,12 +47,17 @@ class _MyAppState extends State<MyApp> {
       _code ?? '',
       _language ?? '',
       _theme ?? '',
-      [],
+      _emphasis,
     ).then((value) {
       setState(() {
         _highlights = value.map((highlight) => highlight.toString()).toList();
       });
     });
+  }
+
+  void _addEmphasis(PhraseLocation location) {
+    _emphasis.add(location);
+    _updateHighlights(_code ?? '');
   }
 
   @override
@@ -64,13 +71,11 @@ class _MyAppState extends State<MyApp> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              child: TextField(
-                onChanged: _updateHighlights,
-                maxLines: 20,
-                keyboardType: TextInputType.multiline,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                ),
+              child: _EditableTextField(
+                onChange: (code) => _updateHighlights(code),
+                onBold: (location) {
+                  _addEmphasis(location);
+                },
               ),
             ),
             Expanded(
@@ -108,6 +113,48 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _EditableTextField extends StatelessWidget {
+  const _EditableTextField({
+    required this.onChange,
+    required this.onBold,
+  });
+
+  final void Function(String) onChange;
+  final void Function(PhraseLocation) onBold;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      onChanged: onChange,
+      maxLines: 20,
+      keyboardType: TextInputType.multiline,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+      ),
+      contextMenuBuilder: (context, state) {
+        final TextEditingValue value = state.textEditingValue;
+        final List<ContextMenuButtonItem> buttonItems =
+            state.contextMenuButtonItems;
+        buttonItems.insert(
+          0,
+          ContextMenuButtonItem(
+            label: 'Bold',
+            onPressed: () {
+              ContextMenuController.removeAny();
+              final range = value.selection;
+              onBold(PhraseLocation(start: range.start, end: range.end));
+            },
+          ),
+        );
+        return AdaptiveTextSelectionToolbar.buttonItems(
+          anchors: state.contextMenuAnchors,
+          buttonItems: buttonItems,
+        );
+      },
     );
   }
 }
