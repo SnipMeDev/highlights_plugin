@@ -36,12 +36,14 @@ public class SwiftHighlightsPlugin: NSObject, FlutterPlugin {
           
           let themeArg = map["theme"] as! String
           let theme = SyntaxThemes().getByName(name: themeArg, darkMode: useDarkMode)
+          
+          let emphasis = tryGetEmphasisFromJson(map["emphasisLocations"] as? String)
 
           updateInstance(
             code: codeArg,
             language: language,
             theme: theme,
-            emphasisLocations: []
+            emphasisLocations: emphasis
           )
 
           let highlightList = highlights.getHighlights();
@@ -82,5 +84,10 @@ public class SwiftHighlightsPlugin: NSObject, FlutterPlugin {
                 emphasisLocations: emphasisLocations ?? []
             ).build()
         }
+    }
+    
+    private func tryGetEmphasisFromJson(_ json: String?) -> [PhraseLocation] {
+        guard let json = json else { return [] }
+        return Array(ExtensionsKt.phraseLocationSetFromJson(json))
     }
 }

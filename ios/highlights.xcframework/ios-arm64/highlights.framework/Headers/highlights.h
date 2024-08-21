@@ -536,6 +536,7 @@ __attribute__((swift_name("ExtensionsKt")))
 + (BOOL)isIndependentPhrase:(NSString *)receiver code:(NSString *)code index:(int32_t)index __attribute__((swift_name("isIndependentPhrase(_:code:index:)")));
 + (BOOL)isNewLine:(unichar)receiver __attribute__((swift_name("isNewLine(_:)")));
 + (int32_t)lengthToEOF:(NSString *)receiver start:(int32_t)start __attribute__((swift_name("lengthToEOF(_:start:)")));
++ (NSSet<HighlightsPhraseLocation *> *)phraseLocationSetFromJson:(NSString *)receiver __attribute__((swift_name("phraseLocationSetFromJson(_:)")));
 + (NSString *)toJson:(NSArray<HighlightsCodeHighlight *> *)receiver __attribute__((swift_name("toJson(_:)")));
 + (NSSet<HighlightsKotlinIntRange *> *)toRangeSet:(NSSet<HighlightsPhraseLocation *> *)receiver __attribute__((swift_name("toRangeSet(_:)")));
 @end

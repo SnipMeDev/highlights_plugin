@@ -78,7 +78,7 @@ class HighlightsPlugin : FlutterPlugin, MethodCallHandler {
         }
     }
 
-    fun tryGetEmphasisFromJson(json: String?): List<PhraseLocation> {
+    private fun tryGetEmphasisFromJson(json: String?): List<PhraseLocation> {
         if (json == null) return emptyList()
         return json.phraseLocationSetFromJson().toList()
     }

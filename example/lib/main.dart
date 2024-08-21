@@ -20,7 +20,7 @@ class _MyAppState extends State<MyApp> {
   String? _language;
   String? _theme;
   List<String> _highlights = [];
-  List<PhraseLocation> _emphasis = [];
+  final List<PhraseLocation> _emphasis = [];
 
   Future<void> _updateDarkMode(bool isDark) async {
     _highlightsPlugin.setDarkMode(isDark);
@@ -74,7 +74,6 @@ class _MyAppState extends State<MyApp> {
               child: _EditableTextField(
                 onChange: (code) => _updateHighlights(code),
                 onBold: (location) {
-                  print('Bold word ${location.start} ${location.end}');
                   _addEmphasis(location);
                 },
               ),
@@ -140,8 +139,6 @@ class _EditableTextField extends StatelessWidget {
         final TextEditingValue value = state.textEditingValue;
         final List<ContextMenuButtonItem> buttonItems =
             state.contextMenuButtonItems;
-        final selected = value.selection.textInside(value.text);
-
         buttonItems.insert(
           0,
           ContextMenuButtonItem(
@@ -150,7 +147,6 @@ class _EditableTextField extends StatelessWidget {
               ContextMenuController.removeAny();
               final range = value.selection;
               onBold(PhraseLocation(start: range.start, end: range.end));
-              print('Bold word $selected');
             },
           ),
         );
