@@ -27,7 +27,7 @@ class HighlightsPlugin : FlutterPlugin, MethodCallHandler {
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "highlights_plugin")
         channel.setMethodCallHandler(this)
-        highlights = Highlights.default()
+        highlights = Highlights.Builder().build()
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
@@ -44,7 +44,19 @@ class HighlightsPlugin : FlutterPlugin, MethodCallHandler {
                     emphasisLocations = tryGetEmphasisFromJson(call.argument("emphasisLocations"))
                 )
 
+                println("Code snapshot before: ${highlights.snapshot}")
+
+                println("---Highlights---")
+                println("Code: ${highlights.getCode()}")
+                println("lang: ${highlights.getLanguage()}")
+                println("theme: ${highlights.getTheme()}")
+                println("emphasis: ${highlights.getEmphasis()}")
+
                 val highlightList = highlights.getHighlights()
+                println("To serialize $highlightList")
+
+                println("Code snapshot after: ${highlights.snapshot}")
+
                 result.success(highlightList.toJson())
             }
             "getLanguages" -> result.success(SyntaxLanguage.getNames())
@@ -65,7 +77,11 @@ class HighlightsPlugin : FlutterPlugin, MethodCallHandler {
         theme: SyntaxTheme?,
         emphasisLocations: List<PhraseLocation>?,
     ) {
+        println("Update instance $code $language $theme $emphasisLocations")
+
         if (highlights.getLanguage() == language && highlights.getTheme() == theme) {
+            println("Only change code $code")
+            println("Only change emphasis $emphasisLocations")
             code?.let { highlights.setCode(it) }
             emphasisLocations?.let { locations -> locations.forEach { highlights.setEmphasis(it) } }
         } else {

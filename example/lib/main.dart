@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:highlights_plugin/highlights_plugin.dart';
 import 'package:highlights_plugin/model/phrase_location.dart';
 
+// TODO Fix initial input issue
+// TODO Test code
+// TODO Add changelog
 void main() {
   runApp(const MyApp());
 }
@@ -41,14 +44,17 @@ class _MyAppState extends State<MyApp> {
     _updateHighlights(_code ?? '');
   }
 
+  // TODO Start from scratch...
   Future<void> _updateHighlights(String code) async {
+    print('Updating highlights $code');
     _code = code;
-    _highlightsPlugin.getHighlights(
+    await _highlightsPlugin.getHighlights(
       _code ?? '',
-      _language ?? '',
-      _theme ?? '',
+      _language,
+      _theme,
       _emphasis,
     ).then((value) {
+      print('Flutter Highlights $value');
       setState(() {
         _highlights = value.map((highlight) => highlight.toString()).toList();
       });

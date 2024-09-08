@@ -33,10 +33,10 @@ abstract class HighlightsPluginPlatform extends PlatformInterface
 
   @override
   Future<List<CodeHighlight>> getHighlights(
-    String code,
-    String language,
-    String theme,
-    List<PhraseLocation> emphasisLocations,
+    String? code,
+    String? language,
+    String? theme,
+    List<PhraseLocation>? emphasisLocations,
   ) {
     throw UnimplementedError('${methods.getHighlights} has not been implemented.');
   }

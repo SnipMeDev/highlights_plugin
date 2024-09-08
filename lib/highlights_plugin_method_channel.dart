@@ -26,10 +26,10 @@ class MethodChannelHighlightsPlugin extends HighlightsPluginPlatform
 
   @override
   Future<List<CodeHighlight>> getHighlights(
-    String code,
-    String language,
-    String theme,
-    List<PhraseLocation> emphasisLocations,
+    String? code,
+    String? language,
+    String? theme,
+    List<PhraseLocation>? emphasisLocations,
   ) async {
     final arguments = {
       "code": code,
@@ -99,14 +99,16 @@ class MethodChannelHighlightsPlugin extends HighlightsPluginPlatform
     );
   }
 
-  Future<String> _getLanguage(String expected) async {
+  Future<String> _getLanguage(String? expected) async {
     final data = _cachedLanguages ?? (await getLanguages());
+    if (expected == null) return data.first;
     final result = data.getMatching(expected);
     return result ?? data.first;
   }
 
-  Future<String> _getTheme(String expected) async {
+  Future<String> _getTheme(String? expected) async {
     final data = _cachedThemes ?? (await getThemes());
+    if (expected == null) return data.first;
     final result = data.getMatching(expected);
     return result ?? data.first;
   }

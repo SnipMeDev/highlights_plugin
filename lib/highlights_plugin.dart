@@ -16,9 +16,9 @@ class HighlightsPlugin implements HighlightsInterface {
   @override
   Future<List<CodeHighlight>> getHighlights(
     String code,
-    String language,
-    String theme,
-    List<PhraseLocation> emphasisLocations,
+    String? language,
+    String? theme,
+    List<PhraseLocation>? emphasisLocations,
   ) async {
     try {
       return await HighlightsPluginPlatform.instance.getHighlights(
