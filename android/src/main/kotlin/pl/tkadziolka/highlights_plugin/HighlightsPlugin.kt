@@ -1,14 +1,15 @@
 package pl.tkadziolka.highlights_plugin
 
+import dev.snipme.highlights.DefaultHighlightsResultListener
 import dev.snipme.highlights.Highlights
 import dev.snipme.highlights.internal.phraseLocationSetFromJson
 import dev.snipme.highlights.internal.toJson
+import dev.snipme.highlights.model.CodeHighlight
 import dev.snipme.highlights.model.PhraseLocation
 import dev.snipme.highlights.model.SyntaxLanguage
 import dev.snipme.highlights.model.SyntaxTheme
 import dev.snipme.highlights.model.SyntaxThemes
 import io.flutter.embedding.engine.plugins.FlutterPlugin
-import io.flutter.plugin.common.JSONUtil
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
@@ -34,6 +35,8 @@ class HighlightsPlugin : FlutterPlugin, MethodCallHandler {
         channel.setMethodCallHandler(null)
     }
 
+    // TODO Implement EventChannel
+
     override fun onMethodCall(call: MethodCall, result: Result) {
         when (call.method) {
             "getHighlights" -> {
@@ -44,20 +47,21 @@ class HighlightsPlugin : FlutterPlugin, MethodCallHandler {
                     emphasisLocations = tryGetEmphasisFromJson(call.argument("emphasisLocations"))
                 )
 
-                println("Code snapshot before: ${highlights.snapshot}")
+                highlights.getHighlightsAsync(
+                    object: DefaultHighlightsResultListener() {
+                        override fun onComplete(highlightList: List<CodeHighlight>) {
+                            result.success(highlightList.toJson())
+                        }
 
-                println("---Highlights---")
-                println("Code: ${highlights.getCode()}")
-                println("lang: ${highlights.getLanguage()}")
-                println("theme: ${highlights.getTheme()}")
-                println("emphasis: ${highlights.getEmphasis()}")
+                        override fun onCancel() {
+                            result.success(null)
+                        }
 
-                val highlightList = highlights.getHighlights()
-                println("To serialize $highlightList")
-
-                println("Code snapshot after: ${highlights.snapshot}")
-
-                result.success(highlightList.toJson())
+                        override fun onError(exception: Throwable) {
+                            result.error("Error", exception.message, null)
+                        }
+                    }
+                )
             }
             "getLanguages" -> result.success(SyntaxLanguage.getNames())
             "getThemes" -> result.success(SyntaxThemes.getNames(useDarkMode))
