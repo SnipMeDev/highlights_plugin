@@ -46,15 +46,17 @@ class _MyAppState extends State<MyApp> {
   Future<void> _updateHighlights(String code) async {
     print('Updating highlights $code');
     _code = code;
-    _highlightsPlugin.getHighlights(
+    _highlightsPlugin
+        .getHighlights(
       _code ?? '',
       _language,
       _theme,
       _emphasis,
-    ).then((value) {
+    )
+        .then((value) {
       print('Flutter Highlights $value');
       setState(() {
-        // TODO Sort by position
+        value.sort((a, b) => a.location.start.compareTo(b.location.start));
         _highlights = value.map((highlight) => highlight.toString()).toList();
       });
     });
