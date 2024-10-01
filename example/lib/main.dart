@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:highlights_plugin/highlights_plugin.dart';
+import 'package:highlights_plugin/model/phrase_location.dart';
 
+// TODO Test code
+// TODO Add changelog
 void main() {
   runApp(const MyApp());
 }
@@ -19,6 +22,12 @@ class _MyAppState extends State<MyApp> {
   String? _language;
   String? _theme;
   List<String> _highlights = [];
+  final List<PhraseLocation> _emphasis = [];
+
+  Future<void> _updateDarkMode(bool isDark) async {
+    _highlightsPlugin.setDarkMode(isDark);
+    _updateHighlights(_code ?? '');
+  }
 
   void _updateLanguage(String language) {
     setState(() {
@@ -35,17 +44,27 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _updateHighlights(String code) async {
+    print('Updating highlights $code');
     _code = code;
-    final highlightList = await _highlightsPlugin.getHighlights(
+    _highlightsPlugin
+        .getHighlights(
       _code ?? '',
-      _language ?? '',
-      _theme ?? '',
-      [],
-    );
-    setState(() {
-      _highlights =
-          highlightList.map((highlight) => highlight.toString()).toList();
+      _language,
+      _theme,
+      _emphasis,
+    )
+        .then((value) {
+      print('Flutter Highlights $value');
+      setState(() {
+        value.sort((a, b) => a.location.start.compareTo(b.location.start));
+        _highlights = value.map((highlight) => highlight.toString()).toList();
+      });
     });
+  }
+
+  void _addEmphasis(PhraseLocation location) {
+    _emphasis.add(location);
+    _updateHighlights(_code ?? '');
   }
 
   @override
@@ -59,13 +78,11 @@ class _MyAppState extends State<MyApp> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              child: TextField(
-                onChanged: _updateHighlights,
-                maxLines: 20,
-                keyboardType: TextInputType.multiline,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                ),
+              child: _EditableTextField(
+                onChange: (code) => _updateHighlights(code),
+                onBold: (location) {
+                  _addEmphasis(location);
+                },
               ),
             ),
             Expanded(
@@ -79,13 +96,15 @@ class _MyAppState extends State<MyApp> {
             )
           ],
         ),
-        // TODO Add theme switcher
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              _ThemeSwitchRow(
+                onChange: (isDark) => _updateDarkMode(isDark),
+              ),
               FutureDropdown(
                 selected: _language,
                 future: _highlightsPlugin.getLanguages(),
@@ -101,6 +120,83 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _EditableTextField extends StatelessWidget {
+  const _EditableTextField({
+    required this.onChange,
+    required this.onBold,
+  });
+
+  final void Function(String) onChange;
+  final void Function(PhraseLocation) onBold;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      onChanged: onChange,
+      maxLines: 20,
+      keyboardType: TextInputType.multiline,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+      ),
+      contextMenuBuilder: (context, state) {
+        final TextEditingValue value = state.textEditingValue;
+        final List<ContextMenuButtonItem> buttonItems =
+            state.contextMenuButtonItems;
+        buttonItems.insert(
+          0,
+          ContextMenuButtonItem(
+            label: 'Bold',
+            onPressed: () {
+              ContextMenuController.removeAny();
+              final range = value.selection;
+              onBold(PhraseLocation(start: range.start, end: range.end));
+            },
+          ),
+        );
+        return AdaptiveTextSelectionToolbar.buttonItems(
+          anchors: state.contextMenuAnchors,
+          buttonItems: buttonItems,
+        );
+      },
+    );
+  }
+}
+
+class _ThemeSwitchRow extends StatefulWidget {
+  const _ThemeSwitchRow({required this.onChange});
+
+  final void Function(bool) onChange;
+
+  @override
+  State<_ThemeSwitchRow> createState() => _ThemeSwitchRowState();
+}
+
+class _ThemeSwitchRowState extends State<_ThemeSwitchRow> {
+  var isDark = false;
+
+  @override
+  Widget build(BuildContext context) {
+    void onChanged(bool value) {
+      widget.onChange(value);
+      setState(() {
+        isDark = value;
+      });
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        const Icon(Icons.brightness_4),
+        Switch(
+          value: isDark,
+          onChanged: (isDark) => onChanged(isDark),
+        ),
+        const Icon(Icons.brightness_2),
+      ],
     );
   }
 }

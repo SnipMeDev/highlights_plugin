@@ -4,6 +4,7 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'highlights_interface.dart';
 import 'highlights_plugin_method_channel.dart';
+import 'method_index.dart' as methods;
 
 abstract class HighlightsPluginPlatform extends PlatformInterface
     implements HighlightsInterface {
@@ -32,21 +33,26 @@ abstract class HighlightsPluginPlatform extends PlatformInterface
 
   @override
   Future<List<CodeHighlight>> getHighlights(
-    String code,
-    String language,
-    String theme,
-    List<PhraseLocation> emphasisLocations,
+    String? code,
+    String? language,
+    String? theme,
+    List<PhraseLocation>? emphasisLocations,
   ) {
-    throw UnimplementedError('$getHighlights has not been implemented.');
+    throw UnimplementedError('${methods.getHighlights} has not been implemented.');
   }
 
   @override
   Future<List<String>> getLanguages() {
-    throw UnimplementedError('$getLanguages has not been implemented.');
+    throw UnimplementedError('${methods.getLanguages} has not been implemented.');
   }
 
   @override
   Future<List<String>> getThemes() {
-    throw UnimplementedError('$getThemes has not been implemented.');
+    throw UnimplementedError('${methods.getThemes} has not been implemented.');
+  }
+
+  @override
+  Future<void> setDarkMode(bool useDarkMode) {
+    throw UnimplementedError('${methods.setDarkMode} has not been implemented.');
   }
 }

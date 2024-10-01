@@ -16,9 +16,9 @@ class HighlightsPlugin implements HighlightsInterface {
   @override
   Future<List<CodeHighlight>> getHighlights(
     String code,
-    String language,
-    String theme,
-    List<PhraseLocation> emphasisLocations,
+    String? language,
+    String? theme,
+    List<PhraseLocation>? emphasisLocations,
   ) async {
     try {
       return await HighlightsPluginPlatform.instance.getHighlights(
@@ -43,7 +43,6 @@ class HighlightsPlugin implements HighlightsInterface {
     }
   }
 
-  // TODO Create release 0.0.1 and 0.0.2
   @override
   Future<List<String>> getThemes() async {
     try {
@@ -51,6 +50,16 @@ class HighlightsPlugin implements HighlightsInterface {
     } catch (e, st) {
       _printDebugInfo(methods.getThemes, e, st);
       return [];
+    }
+  }
+
+  @override
+  Future<void> setDarkMode(bool useDarkMode) {
+    try {
+      return HighlightsPluginPlatform.instance.setDarkMode(useDarkMode);
+    } catch (e, st) {
+      _printDebugInfo(methods.setDarkMode, e, st);
+      return Future.value();
     }
   }
 
