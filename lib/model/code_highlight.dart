@@ -24,8 +24,8 @@ class CodeHighlight {
 @JsonSerializable(createToJson: false)
 class BoldHighlight extends CodeHighlight {
   BoldHighlight({
-    required PhraseLocation location,
-  }) : super(location: location);
+    required super.location,
+  });
 
   factory BoldHighlight.fromJson(
     Map<String, dynamic> json,
@@ -42,9 +42,9 @@ class ColorHighlight extends CodeHighlight {
   final int rgb;
 
   ColorHighlight({
-    required PhraseLocation location,
+    required super.location,
     required this.rgb,
-  }) : super(location: location);
+  });
 
   factory ColorHighlight.fromJson(
     Map<String, dynamic> json,
