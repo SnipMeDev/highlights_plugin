@@ -15,12 +15,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
-/** HighlightsPlugin */
 class HighlightsPlugin : FlutterPlugin, MethodCallHandler {
-    /// The MethodChannel that will the communication between Flutter and native Android
-    ///
-    /// This local reference serves to register the plugin with the Flutter Engine and unregister it
-    /// when the Flutter Engine is detached from the Activity
     private lateinit var channel: MethodChannel
     private lateinit var highlights: Highlights
     private var useDarkMode = false
@@ -35,8 +30,6 @@ class HighlightsPlugin : FlutterPlugin, MethodCallHandler {
         channel.setMethodCallHandler(null)
     }
 
-    // TODO Implement EventChannel
-
     override fun onMethodCall(call: MethodCall, result: Result) {
         when (call.method) {
             "getHighlights" -> {
@@ -49,8 +42,8 @@ class HighlightsPlugin : FlutterPlugin, MethodCallHandler {
 
                 highlights.getHighlightsAsync(
                     object: DefaultHighlightsResultListener() {
-                        override fun onComplete(highlightList: List<CodeHighlight>) {
-                            result.success(highlightList.toJson())
+                        override fun onSuccess(highlights: List<CodeHighlight>) {
+                            result.success(highlights.toJson())
                         }
 
                         override fun onCancel() {
@@ -81,11 +74,7 @@ class HighlightsPlugin : FlutterPlugin, MethodCallHandler {
         theme: SyntaxTheme?,
         emphasisLocations: List<PhraseLocation>?,
     ) {
-        println("Update instance $code $language $theme $emphasisLocations")
-
         if (highlights.getLanguage() == language && highlights.getTheme() == theme) {
-            println("Only change code $code")
-            println("Only change emphasis $emphasisLocations")
             code?.let { highlights.setCode(it) }
             emphasisLocations?.let { locations -> locations.forEach { highlights.setEmphasis(it) } }
         } else {
