@@ -17,15 +17,15 @@ public class SwiftHighlightsPlugin: NSObject, FlutterPlugin {
 
   public func handle(
     _ call: FlutterMethodCall,
-    result: @escaping FlutterResult
+    flutterResult: @escaping FlutterResult
   ) {
       switch(call.method) {
       case "getLanguages":
           let languages = SyntaxLanguage.companion.getNames()
-          result(languages)
+          flutterResult(languages)
       case "getThemes":
           let themes = SyntaxThemes().getNames(darkMode: useDarkMode)
-          result(themes)
+          flutterResult(themes)
       case "getHighlights":
           let map = call.arguments as! Dictionary<String, Any>
           
@@ -45,16 +45,36 @@ public class SwiftHighlightsPlugin: NSObject, FlutterPlugin {
             theme: theme,
             emphasisLocations: emphasis
           )
-
-          let highlightList = highlights.getHighlights();
           
-          result(ExtensionsKt.toJson(highlightList))
+          class Listener: DefaultHighlightsResultListener {
+              var flutterResult: FlutterResult
+              
+              init(flutterResult: @escaping FlutterResult) {
+                  self.flutterResult = flutterResult
+              }
+              
+              override func onStart() {}
+              
+              override func onCancel() {
+                  flutterResult(nil)
+              }
+              
+              override func onSuccess(result: [CodeHighlight]) {
+                  flutterResult(ExtensionsKt.toJson(result))
+              }
+              
+              override func onError(exception: KotlinThrowable) {
+                  flutterResult(exception)
+              }
+          }
+                    
+          highlights.getHighlightsAsync(listener: Listener(flutterResult: flutterResult));
       case "setDarkMode":
           let map = call.arguments as! Dictionary<String, Any>
           useDarkMode = map["useDarkMode"] as? Bool ?? false
-          result(nil)
+          flutterResult(nil)
       default:
-          result(["No results"])
+          flutterResult(["No results"])
       }
   }
     
