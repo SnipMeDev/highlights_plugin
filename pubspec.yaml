@@ -28,7 +28,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: pl.tkadziolka.highlights_plugin
+        package: dev.snipme.highlights_plugin
         pluginClass: HighlightsPlugin
       ios:
         pluginClass: HighlightsPlugin

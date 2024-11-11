@@ -1,4 +1,4 @@
-package pl.tkadziolka.highlights_plugin
+package dev.snipme.highlights_plugin
 
 import dev.snipme.highlights.DefaultHighlightsResultListener
 import dev.snipme.highlights.Highlights

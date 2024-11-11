@@ -1,4 +1,4 @@
-group 'pl.tkadziolka.highlights_plugin'
+group 'dev.snipme.highlights_plugin'
 version '1.0-SNAPSHOT'
 
 buildscript {
