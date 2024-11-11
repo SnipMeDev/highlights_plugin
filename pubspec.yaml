@@ -1,6 +1,6 @@
 name: highlights_plugin
 description: Dart implementation of highlights syntax highlighting engine.
-version: 0.1.0
+version: 0.2.0
 repository: https://github.com/SnipMeDev/highlights_plugin
 homepage: https://github.com/SnipMeDev/highlights_plugin
 
