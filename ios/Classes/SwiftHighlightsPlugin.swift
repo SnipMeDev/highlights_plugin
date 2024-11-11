@@ -17,15 +17,15 @@ public class SwiftHighlightsPlugin: NSObject, FlutterPlugin {
 
   public func handle(
     _ call: FlutterMethodCall,
-    flutterResult: @escaping FlutterResult
+    result: @escaping FlutterResult
   ) {
       switch(call.method) {
       case "getLanguages":
           let languages = SyntaxLanguage.companion.getNames()
-          flutterResult(languages)
+          result(languages)
       case "getThemes":
           let themes = SyntaxThemes().getNames(darkMode: useDarkMode)
-          flutterResult(themes)
+          result(themes)
       case "getHighlights":
           let map = call.arguments as! Dictionary<String, Any>
           
@@ -48,33 +48,33 @@ public class SwiftHighlightsPlugin: NSObject, FlutterPlugin {
           
           class Listener: DefaultHighlightsResultListener {
               var flutterResult: FlutterResult
-              
+
               init(flutterResult: @escaping FlutterResult) {
                   self.flutterResult = flutterResult
               }
-              
+
               override func onStart() {}
-              
+
               override func onCancel() {
                   flutterResult(nil)
               }
-              
+
               override func onSuccess(result: [CodeHighlight]) {
                   flutterResult(ExtensionsKt.toJson(result))
               }
-              
+
               override func onError(exception: KotlinThrowable) {
                   flutterResult(exception)
               }
           }
-                    
-          highlights.getHighlightsAsync(listener: Listener(flutterResult: flutterResult));
+
+          highlights.getHighlightsAsync(listener: Listener(flutterResult: result));
       case "setDarkMode":
           let map = call.arguments as! Dictionary<String, Any>
           useDarkMode = map["useDarkMode"] as? Bool ?? false
-          flutterResult(nil)
+          result(nil)
       default:
-          flutterResult(["No results"])
+          result(["No results"])
       }
   }
     
