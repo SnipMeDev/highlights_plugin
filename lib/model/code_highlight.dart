@@ -35,6 +35,16 @@ class BoldHighlight extends CodeHighlight {
   @override
   String toString() =>
       'BoldHighlight(start:${location.start}, end:${location.end})';
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is BoldHighlight && other.location == location;
+  }
+
+  @override
+  int get hashCode => location.hashCode;
 }
 
 @JsonSerializable(createToJson: false)
@@ -54,4 +64,16 @@ class ColorHighlight extends CodeHighlight {
   @override
   String toString() =>
       'ColorHighlight(start:${location.start}, end:${location.end}), rgb: $rgb)';
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ColorHighlight &&
+        other.location == location &&
+        other.rgb == rgb;
+  }
+
+  @override
+  int get hashCode => location.hashCode ^ rgb.hashCode;
 }
