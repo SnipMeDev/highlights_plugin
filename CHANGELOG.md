@@ -2,6 +2,7 @@
 
 ### Added
 - pub.dev setup
+- unit tests
 
 ### Changed
 - Flutter sdk version to 3.24.0
