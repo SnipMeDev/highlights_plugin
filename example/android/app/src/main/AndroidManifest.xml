@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="pl.tkadziolka.highlights_plugin_example">
+    package="dev.snipme.highlights_plugin_example">
    <application
         android:label="highlights_plugin_example"
         android:name="${applicationName}"

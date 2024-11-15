@@ -1,4 +1,4 @@
-package pl.tkadziolka.highlights_plugin_example
+package dev.snipme.highlights_plugin_example
 
 import io.flutter.embedding.android.FlutterActivity
 
