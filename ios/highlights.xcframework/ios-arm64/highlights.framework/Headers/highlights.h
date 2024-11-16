@@ -6,9 +6,9 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
 
-@class HighlightsHighlightsCompanion, HighlightsHighlightsBuilder, HighlightsCodeStructure, HighlightsPhraseLocation, HighlightsCodeHighlight, HighlightsSyntaxLanguage, HighlightsSyntaxTheme, HighlightsKotlinArray<T>, HighlightsCodeSnapshot, HighlightsHighlights, HighlightsCodeHighlightCompanion, HighlightsBoldHighlightCompanion, HighlightsBoldHighlight, HighlightsCodeStructureCompanion, HighlightsColorHighlightCompanion, HighlightsColorHighlight, HighlightsPhraseLocationCompanion, HighlightsKotlinEnumCompanion, HighlightsKotlinEnum<E>, HighlightsSyntaxLanguageCompanion, HighlightsSyntaxThemeCompanion, HighlightsSyntaxThemes, HighlightsKotlinIntProgressionCompanion, HighlightsKotlinIntIterator, HighlightsKotlinIntProgression, HighlightsKotlinIntRangeCompanion, HighlightsKotlinIntRange, HighlightsKotlinx_serialization_coreSerializersModule, HighlightsKotlinx_serialization_coreSerialKind, HighlightsKotlinNothing;
+@class HighlightsKotlinThrowable, HighlightsCodeHighlight, HighlightsHighlightsCompanion, HighlightsHighlightsBuilder, HighlightsCodeStructure, HighlightsPhraseLocation, HighlightsSyntaxLanguage, HighlightsCodeSnapshot, HighlightsSyntaxTheme, HighlightsKotlinArray<T>, HighlightsHighlights, HighlightsCodeHighlightCompanion, HighlightsBoldHighlightCompanion, HighlightsBoldHighlight, HighlightsCodeStructureCompanion, HighlightsColorHighlightCompanion, HighlightsColorHighlight, HighlightsPhraseLocationCompanion, HighlightsKotlinEnumCompanion, HighlightsKotlinEnum<E>, HighlightsSyntaxLanguageCompanion, HighlightsSyntaxThemeCompanion, HighlightsSyntaxThemes, HighlightsKotlinIntProgressionCompanion, HighlightsKotlinIntIterator, HighlightsKotlinIntProgression, HighlightsKotlinIntRangeCompanion, HighlightsKotlinIntRange, HighlightsKotlinCancellationException, HighlightsKotlinx_serialization_coreSerializersModule, HighlightsKotlinx_serialization_coreSerialKind, HighlightsKotlinNothing, HighlightsKotlinException, HighlightsKotlinRuntimeException, HighlightsKotlinIllegalStateException, HighlightsKotlinUnit;
 
-@protocol HighlightsKotlinx_serialization_coreKSerializer, HighlightsKotlinComparable, HighlightsKotlinIterator, HighlightsKotlinIterable, HighlightsKotlinClosedRange, HighlightsKotlinOpenEndRange, HighlightsKotlinx_serialization_coreEncoder, HighlightsKotlinx_serialization_coreSerialDescriptor, HighlightsKotlinx_serialization_coreSerializationStrategy, HighlightsKotlinx_serialization_coreDecoder, HighlightsKotlinx_serialization_coreDeserializationStrategy, HighlightsKotlinx_serialization_coreCompositeEncoder, HighlightsKotlinAnnotation, HighlightsKotlinx_serialization_coreCompositeDecoder, HighlightsKotlinx_serialization_coreSerializersModuleCollector, HighlightsKotlinKClass, HighlightsKotlinKDeclarationContainer, HighlightsKotlinKAnnotatedElement, HighlightsKotlinKClassifier;
+@protocol HighlightsHighlightsResultListener, HighlightsKotlinx_serialization_coreKSerializer, HighlightsKotlinComparable, HighlightsKotlinIterator, HighlightsKotlinIterable, HighlightsKotlinClosedRange, HighlightsKotlinOpenEndRange, HighlightsKotlinx_coroutines_coreJob, HighlightsKotlinx_serialization_coreEncoder, HighlightsKotlinx_serialization_coreSerialDescriptor, HighlightsKotlinx_serialization_coreSerializationStrategy, HighlightsKotlinx_serialization_coreDecoder, HighlightsKotlinx_serialization_coreDeserializationStrategy, HighlightsKotlinx_coroutines_coreChildHandle, HighlightsKotlinx_coroutines_coreChildJob, HighlightsKotlinx_coroutines_coreDisposableHandle, HighlightsKotlinSequence, HighlightsKotlinx_coroutines_coreSelectClause0, HighlightsKotlinCoroutineContextKey, HighlightsKotlinCoroutineContextElement, HighlightsKotlinCoroutineContext, HighlightsKotlinx_serialization_coreCompositeEncoder, HighlightsKotlinAnnotation, HighlightsKotlinx_serialization_coreCompositeDecoder, HighlightsKotlinx_coroutines_coreParentJob, HighlightsKotlinx_coroutines_coreSelectInstance, HighlightsKotlinx_coroutines_coreSelectClause, HighlightsKotlinx_serialization_coreSerializersModuleCollector, HighlightsKotlinKClass, HighlightsKotlinKDeclarationContainer, HighlightsKotlinKAnnotatedElement, HighlightsKotlinKClassifier;
 
 NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic push
@@ -144,20 +144,41 @@ __attribute__((swift_name("KotlinBoolean")))
 + (instancetype)numberWithBool:(BOOL)value;
 @end
 
+__attribute__((swift_name("HighlightsResultListener")))
+@protocol HighlightsHighlightsResultListener
+@required
+- (void)onCancel __attribute__((swift_name("onCancel()")));
+- (void)onErrorException:(HighlightsKotlinThrowable *)exception __attribute__((swift_name("onError(exception:)")));
+- (void)onStart __attribute__((swift_name("onStart()")));
+- (void)onSuccessResult:(NSArray<HighlightsCodeHighlight *> *)result __attribute__((swift_name("onSuccess(result:)")));
+@end
+
+__attribute__((swift_name("DefaultHighlightsResultListener")))
+@interface HighlightsDefaultHighlightsResultListener : HighlightsBase <HighlightsHighlightsResultListener>
+- (instancetype)init __attribute__((swift_name("init()"))) __attribute__((objc_designated_initializer));
++ (instancetype)new __attribute__((availability(swift, unavailable, message="use object initializers instead")));
+- (void)onCancel __attribute__((swift_name("onCancel()")));
+- (void)onErrorException:(HighlightsKotlinThrowable *)exception __attribute__((swift_name("onError(exception:)")));
+- (void)onStart __attribute__((swift_name("onStart()")));
+- (void)onSuccessResult:(NSArray<HighlightsCodeHighlight *> *)result __attribute__((swift_name("onSuccess(result:)")));
+@end
+
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("Highlights")))
 @interface HighlightsHighlights : HighlightsBase
 @property (class, readonly, getter=companion) HighlightsHighlightsCompanion *companion __attribute__((swift_name("companion")));
+- (void)clearSnapshot __attribute__((swift_name("clearSnapshot()")));
 - (HighlightsHighlightsBuilder *)getBuilder __attribute__((swift_name("getBuilder()")));
 - (NSString *)getCode __attribute__((swift_name("getCode()")));
 - (HighlightsCodeStructure *)getCodeStructure __attribute__((swift_name("getCodeStructure()")));
 - (NSArray<HighlightsPhraseLocation *> *)getEmphasis __attribute__((swift_name("getEmphasis()")));
 - (NSArray<HighlightsCodeHighlight *> *)getHighlights __attribute__((swift_name("getHighlights()")));
+- (id)getHighlightsAsyncListener:(id<HighlightsHighlightsResultListener>)listener __attribute__((swift_name("getHighlightsAsync(listener:)")));
 - (HighlightsSyntaxLanguage *)getLanguage __attribute__((swift_name("getLanguage()")));
+- (HighlightsCodeSnapshot * _Nullable)getSnapshot __attribute__((swift_name("getSnapshot()")));
 - (HighlightsSyntaxTheme *)getTheme __attribute__((swift_name("getTheme()")));
 - (void)setCodeCode:(NSString *)code __attribute__((swift_name("setCode(code:)")));
 - (void)setEmphasisLocations:(HighlightsKotlinArray<HighlightsPhraseLocation *> *)locations __attribute__((swift_name("setEmphasis(locations:)")));
-@property (readonly) HighlightsCodeSnapshot * _Nullable snapshot __attribute__((swift_name("snapshot")));
 @end
 
 __attribute__((objc_subclassing_restricted))
@@ -536,9 +557,30 @@ __attribute__((swift_name("ExtensionsKt")))
 + (BOOL)isIndependentPhrase:(NSString *)receiver code:(NSString *)code index:(int32_t)index __attribute__((swift_name("isIndependentPhrase(_:code:index:)")));
 + (BOOL)isNewLine:(unichar)receiver __attribute__((swift_name("isNewLine(_:)")));
 + (int32_t)lengthToEOF:(NSString *)receiver start:(int32_t)start __attribute__((swift_name("lengthToEOF(_:start:)")));
++ (void)onCancel:(id<HighlightsKotlinx_coroutines_coreJob>)receiver block:(void (^)(void))block __attribute__((swift_name("onCancel(_:block:)")));
 + (NSSet<HighlightsPhraseLocation *> *)phraseLocationSetFromJson:(NSString *)receiver __attribute__((swift_name("phraseLocationSetFromJson(_:)")));
 + (NSString *)toJson:(NSArray<HighlightsCodeHighlight *> *)receiver __attribute__((swift_name("toJson(_:)")));
 + (NSSet<HighlightsKotlinIntRange *> *)toRangeSet:(NSSet<HighlightsPhraseLocation *> *)receiver __attribute__((swift_name("toRangeSet(_:)")));
+@end
+
+__attribute__((swift_name("KotlinThrowable")))
+@interface HighlightsKotlinThrowable : HighlightsBase
+- (instancetype)init __attribute__((swift_name("init()"))) __attribute__((objc_designated_initializer));
++ (instancetype)new __attribute__((availability(swift, unavailable, message="use object initializers instead")));
+- (instancetype)initWithMessage:(NSString * _Nullable)message __attribute__((swift_name("init(message:)"))) __attribute__((objc_designated_initializer));
+- (instancetype)initWithCause:(HighlightsKotlinThrowable * _Nullable)cause __attribute__((swift_name("init(cause:)"))) __attribute__((objc_designated_initializer));
+- (instancetype)initWithMessage:(NSString * _Nullable)message cause:(HighlightsKotlinThrowable * _Nullable)cause __attribute__((swift_name("init(message:cause:)"))) __attribute__((objc_designated_initializer));
+
+/**
+ * @note annotations
+ *   kotlin.experimental.ExperimentalNativeApi
+*/
+- (HighlightsKotlinArray<NSString *> *)getStackTrace __attribute__((swift_name("getStackTrace()")));
+- (void)printStackTrace __attribute__((swift_name("printStackTrace()")));
+- (NSString *)description __attribute__((swift_name("description()")));
+@property (readonly) HighlightsKotlinThrowable * _Nullable cause __attribute__((swift_name("cause")));
+@property (readonly) NSString * _Nullable message __attribute__((swift_name("message")));
+- (NSError *)asError __attribute__((swift_name("asError()")));
 @end
 
 __attribute__((objc_subclassing_restricted))
@@ -614,6 +656,70 @@ __attribute__((swift_name("KotlinIntRange.Companion")))
 + (instancetype)companion __attribute__((swift_name("init()")));
 @property (class, readonly, getter=shared) HighlightsKotlinIntRangeCompanion *shared __attribute__((swift_name("shared")));
 @property (readonly) HighlightsKotlinIntRange *EMPTY __attribute__((swift_name("EMPTY")));
+@end
+
+
+/**
+ * @note annotations
+ *   kotlin.SinceKotlin(version="1.3")
+*/
+__attribute__((swift_name("KotlinCoroutineContext")))
+@protocol HighlightsKotlinCoroutineContext
+@required
+- (id _Nullable)foldInitial:(id _Nullable)initial operation:(id _Nullable (^)(id _Nullable, id<HighlightsKotlinCoroutineContextElement>))operation __attribute__((swift_name("fold(initial:operation:)")));
+- (id<HighlightsKotlinCoroutineContextElement> _Nullable)getKey:(id<HighlightsKotlinCoroutineContextKey>)key __attribute__((swift_name("get(key:)")));
+- (id<HighlightsKotlinCoroutineContext>)minusKeyKey:(id<HighlightsKotlinCoroutineContextKey>)key __attribute__((swift_name("minusKey(key:)")));
+- (id<HighlightsKotlinCoroutineContext>)plusContext:(id<HighlightsKotlinCoroutineContext>)context __attribute__((swift_name("plus(context:)")));
+@end
+
+__attribute__((swift_name("KotlinCoroutineContextElement")))
+@protocol HighlightsKotlinCoroutineContextElement <HighlightsKotlinCoroutineContext>
+@required
+@property (readonly) id<HighlightsKotlinCoroutineContextKey> key __attribute__((swift_name("key")));
+@end
+
+__attribute__((swift_name("Kotlinx_coroutines_coreJob")))
+@protocol HighlightsKotlinx_coroutines_coreJob <HighlightsKotlinCoroutineContextElement>
+@required
+
+/**
+ * @note annotations
+ *   kotlinx.coroutines.InternalCoroutinesApi
+*/
+- (id<HighlightsKotlinx_coroutines_coreChildHandle>)attachChildChild:(id<HighlightsKotlinx_coroutines_coreChildJob>)child __attribute__((swift_name("attachChild(child:)")));
+- (void)cancelCause:(HighlightsKotlinCancellationException * _Nullable)cause __attribute__((swift_name("cancel(cause:)")));
+
+/**
+ * @note annotations
+ *   kotlinx.coroutines.InternalCoroutinesApi
+*/
+- (HighlightsKotlinCancellationException *)getCancellationException __attribute__((swift_name("getCancellationException()")));
+- (id<HighlightsKotlinx_coroutines_coreDisposableHandle>)invokeOnCompletionHandler:(void (^)(HighlightsKotlinThrowable * _Nullable))handler __attribute__((swift_name("invokeOnCompletion(handler:)")));
+
+/**
+ * @note annotations
+ *   kotlinx.coroutines.InternalCoroutinesApi
+*/
+- (id<HighlightsKotlinx_coroutines_coreDisposableHandle>)invokeOnCompletionOnCancelling:(BOOL)onCancelling invokeImmediately:(BOOL)invokeImmediately handler:(void (^)(HighlightsKotlinThrowable * _Nullable))handler __attribute__((swift_name("invokeOnCompletion(onCancelling:invokeImmediately:handler:)")));
+
+/**
+ * @note This method converts instances of CancellationException to errors.
+ * Other uncaught Kotlin exceptions are fatal.
+*/
+- (void)joinWithCompletionHandler:(void (^)(NSError * _Nullable))completionHandler __attribute__((swift_name("join(completionHandler:)")));
+- (id<HighlightsKotlinx_coroutines_coreJob>)plusOther:(id<HighlightsKotlinx_coroutines_coreJob>)other __attribute__((swift_name("plus(other:)"))) __attribute__((unavailable("Operator '+' on two Job objects is meaningless. Job is a coroutine context element and `+` is a set-sum operator for coroutine contexts. The job to the right of `+` just replaces the job the left of `+`.")));
+- (BOOL)start_ __attribute__((swift_name("start()")));
+@property (readonly) id<HighlightsKotlinSequence> children __attribute__((swift_name("children")));
+@property (readonly) BOOL isActive __attribute__((swift_name("isActive")));
+@property (readonly) BOOL isCancelled __attribute__((swift_name("isCancelled")));
+@property (readonly) BOOL isCompleted __attribute__((swift_name("isCompleted")));
+@property (readonly) id<HighlightsKotlinx_coroutines_coreSelectClause0> onJoin __attribute__((swift_name("onJoin")));
+
+/**
+ * @note annotations
+ *   kotlinx.coroutines.ExperimentalCoroutinesApi
+*/
+@property (readonly) id<HighlightsKotlinx_coroutines_coreJob> _Nullable parent __attribute__((swift_name("parent")));
 @end
 
 __attribute__((swift_name("Kotlinx_serialization_coreEncoder")))
@@ -757,6 +863,121 @@ __attribute__((swift_name("Kotlinx_serialization_coreDecoder")))
 @property (readonly) HighlightsKotlinx_serialization_coreSerializersModule *serializersModule __attribute__((swift_name("serializersModule")));
 @end
 
+__attribute__((swift_name("KotlinException")))
+@interface HighlightsKotlinException : HighlightsKotlinThrowable
+- (instancetype)init __attribute__((swift_name("init()"))) __attribute__((objc_designated_initializer));
++ (instancetype)new __attribute__((availability(swift, unavailable, message="use object initializers instead")));
+- (instancetype)initWithMessage:(NSString * _Nullable)message __attribute__((swift_name("init(message:)"))) __attribute__((objc_designated_initializer));
+- (instancetype)initWithCause:(HighlightsKotlinThrowable * _Nullable)cause __attribute__((swift_name("init(cause:)"))) __attribute__((objc_designated_initializer));
+- (instancetype)initWithMessage:(NSString * _Nullable)message cause:(HighlightsKotlinThrowable * _Nullable)cause __attribute__((swift_name("init(message:cause:)"))) __attribute__((objc_designated_initializer));
+@end
+
+__attribute__((swift_name("KotlinRuntimeException")))
+@interface HighlightsKotlinRuntimeException : HighlightsKotlinException
+- (instancetype)init __attribute__((swift_name("init()"))) __attribute__((objc_designated_initializer));
++ (instancetype)new __attribute__((availability(swift, unavailable, message="use object initializers instead")));
+- (instancetype)initWithMessage:(NSString * _Nullable)message __attribute__((swift_name("init(message:)"))) __attribute__((objc_designated_initializer));
+- (instancetype)initWithCause:(HighlightsKotlinThrowable * _Nullable)cause __attribute__((swift_name("init(cause:)"))) __attribute__((objc_designated_initializer));
+- (instancetype)initWithMessage:(NSString * _Nullable)message cause:(HighlightsKotlinThrowable * _Nullable)cause __attribute__((swift_name("init(message:cause:)"))) __attribute__((objc_designated_initializer));
+@end
+
+__attribute__((swift_name("KotlinIllegalStateException")))
+@interface HighlightsKotlinIllegalStateException : HighlightsKotlinRuntimeException
+- (instancetype)init __attribute__((swift_name("init()"))) __attribute__((objc_designated_initializer));
++ (instancetype)new __attribute__((availability(swift, unavailable, message="use object initializers instead")));
+- (instancetype)initWithMessage:(NSString * _Nullable)message __attribute__((swift_name("init(message:)"))) __attribute__((objc_designated_initializer));
+- (instancetype)initWithCause:(HighlightsKotlinThrowable * _Nullable)cause __attribute__((swift_name("init(cause:)"))) __attribute__((objc_designated_initializer));
+- (instancetype)initWithMessage:(NSString * _Nullable)message cause:(HighlightsKotlinThrowable * _Nullable)cause __attribute__((swift_name("init(message:cause:)"))) __attribute__((objc_designated_initializer));
+@end
+
+
+/**
+ * @note annotations
+ *   kotlin.SinceKotlin(version="1.4")
+*/
+__attribute__((swift_name("KotlinCancellationException")))
+@interface HighlightsKotlinCancellationException : HighlightsKotlinIllegalStateException
+- (instancetype)init __attribute__((swift_name("init()"))) __attribute__((objc_designated_initializer));
++ (instancetype)new __attribute__((availability(swift, unavailable, message="use object initializers instead")));
+- (instancetype)initWithMessage:(NSString * _Nullable)message __attribute__((swift_name("init(message:)"))) __attribute__((objc_designated_initializer));
+- (instancetype)initWithCause:(HighlightsKotlinThrowable * _Nullable)cause __attribute__((swift_name("init(cause:)"))) __attribute__((objc_designated_initializer));
+- (instancetype)initWithMessage:(NSString * _Nullable)message cause:(HighlightsKotlinThrowable * _Nullable)cause __attribute__((swift_name("init(message:cause:)"))) __attribute__((objc_designated_initializer));
+@end
+
+__attribute__((swift_name("Kotlinx_coroutines_coreDisposableHandle")))
+@protocol HighlightsKotlinx_coroutines_coreDisposableHandle
+@required
+- (void)dispose __attribute__((swift_name("dispose()")));
+@end
+
+
+/**
+ * @note annotations
+ *   kotlinx.coroutines.InternalCoroutinesApi
+*/
+__attribute__((swift_name("Kotlinx_coroutines_coreChildHandle")))
+@protocol HighlightsKotlinx_coroutines_coreChildHandle <HighlightsKotlinx_coroutines_coreDisposableHandle>
+@required
+
+/**
+ * @note annotations
+ *   kotlinx.coroutines.InternalCoroutinesApi
+*/
+- (BOOL)childCancelledCause:(HighlightsKotlinThrowable *)cause __attribute__((swift_name("childCancelled(cause:)")));
+
+/**
+ * @note annotations
+ *   kotlinx.coroutines.InternalCoroutinesApi
+*/
+@property (readonly) id<HighlightsKotlinx_coroutines_coreJob> _Nullable parent __attribute__((swift_name("parent")));
+@end
+
+
+/**
+ * @note annotations
+ *   kotlinx.coroutines.InternalCoroutinesApi
+*/
+__attribute__((swift_name("Kotlinx_coroutines_coreChildJob")))
+@protocol HighlightsKotlinx_coroutines_coreChildJob <HighlightsKotlinx_coroutines_coreJob>
+@required
+
+/**
+ * @note annotations
+ *   kotlinx.coroutines.InternalCoroutinesApi
+*/
+- (void)parentCancelledParentJob:(id<HighlightsKotlinx_coroutines_coreParentJob>)parentJob __attribute__((swift_name("parentCancelled(parentJob:)")));
+@end
+
+__attribute__((swift_name("KotlinSequence")))
+@protocol HighlightsKotlinSequence
+@required
+- (id<HighlightsKotlinIterator>)iterator __attribute__((swift_name("iterator()")));
+@end
+
+
+/**
+ * @note annotations
+ *   kotlinx.coroutines.InternalCoroutinesApi
+*/
+__attribute__((swift_name("Kotlinx_coroutines_coreSelectClause")))
+@protocol HighlightsKotlinx_coroutines_coreSelectClause
+@required
+@property (readonly) id clauseObject __attribute__((swift_name("clauseObject")));
+@property (readonly) HighlightsKotlinUnit *(^(^ _Nullable onCancellationConstructor)(id<HighlightsKotlinx_coroutines_coreSelectInstance>, id _Nullable, id _Nullable))(HighlightsKotlinThrowable *, id _Nullable, id<HighlightsKotlinCoroutineContext>) __attribute__((swift_name("onCancellationConstructor")));
+@property (readonly) id _Nullable (^processResFunc)(id, id _Nullable, id _Nullable) __attribute__((swift_name("processResFunc")));
+@property (readonly) void (^regFunc)(id, id<HighlightsKotlinx_coroutines_coreSelectInstance>, id _Nullable) __attribute__((swift_name("regFunc")));
+@end
+
+__attribute__((swift_name("Kotlinx_coroutines_coreSelectClause0")))
+@protocol HighlightsKotlinx_coroutines_coreSelectClause0 <HighlightsKotlinx_coroutines_coreSelectClause>
+@required
+@end
+
+__attribute__((swift_name("KotlinCoroutineContextKey")))
+@protocol HighlightsKotlinCoroutineContextKey
+@required
+@end
+
 __attribute__((swift_name("Kotlinx_serialization_coreCompositeEncoder")))
 @protocol HighlightsKotlinx_serialization_coreCompositeEncoder
 @required
@@ -866,6 +1087,46 @@ __attribute__((swift_name("Kotlinx_serialization_coreCompositeDecoder")))
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("KotlinNothing")))
 @interface HighlightsKotlinNothing : HighlightsBase
+@end
+
+
+/**
+ * @note annotations
+ *   kotlinx.coroutines.InternalCoroutinesApi
+*/
+__attribute__((swift_name("Kotlinx_coroutines_coreParentJob")))
+@protocol HighlightsKotlinx_coroutines_coreParentJob <HighlightsKotlinx_coroutines_coreJob>
+@required
+
+/**
+ * @note annotations
+ *   kotlinx.coroutines.InternalCoroutinesApi
+*/
+- (HighlightsKotlinCancellationException *)getChildJobCancellationCause __attribute__((swift_name("getChildJobCancellationCause()")));
+@end
+
+__attribute__((objc_subclassing_restricted))
+__attribute__((swift_name("KotlinUnit")))
+@interface HighlightsKotlinUnit : HighlightsBase
++ (instancetype)alloc __attribute__((unavailable));
++ (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
++ (instancetype)unit __attribute__((swift_name("init()")));
+@property (class, readonly, getter=shared) HighlightsKotlinUnit *shared __attribute__((swift_name("shared")));
+- (NSString *)description __attribute__((swift_name("description()")));
+@end
+
+
+/**
+ * @note annotations
+ *   kotlinx.coroutines.InternalCoroutinesApi
+*/
+__attribute__((swift_name("Kotlinx_coroutines_coreSelectInstance")))
+@protocol HighlightsKotlinx_coroutines_coreSelectInstance
+@required
+- (void)disposeOnCompletionDisposableHandle:(id<HighlightsKotlinx_coroutines_coreDisposableHandle>)disposableHandle __attribute__((swift_name("disposeOnCompletion(disposableHandle:)")));
+- (void)selectInRegistrationPhaseInternalResult:(id _Nullable)internalResult __attribute__((swift_name("selectInRegistrationPhase(internalResult:)")));
+- (BOOL)trySelectClauseObject:(id)clauseObject result:(id _Nullable)result __attribute__((swift_name("trySelect(clauseObject:result:)")));
+@property (readonly) id<HighlightsKotlinCoroutineContext> context __attribute__((swift_name("context")));
 @end
 
 

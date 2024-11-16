@@ -24,8 +24,8 @@ class CodeHighlight {
 @JsonSerializable(createToJson: false)
 class BoldHighlight extends CodeHighlight {
   BoldHighlight({
-    required PhraseLocation location,
-  }) : super(location: location);
+    required super.location,
+  });
 
   factory BoldHighlight.fromJson(
     Map<String, dynamic> json,
@@ -35,6 +35,16 @@ class BoldHighlight extends CodeHighlight {
   @override
   String toString() =>
       'BoldHighlight(start:${location.start}, end:${location.end})';
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is BoldHighlight && other.location == location;
+  }
+
+  @override
+  int get hashCode => location.hashCode;
 }
 
 @JsonSerializable(createToJson: false)
@@ -42,9 +52,9 @@ class ColorHighlight extends CodeHighlight {
   final int rgb;
 
   ColorHighlight({
-    required PhraseLocation location,
+    required super.location,
     required this.rgb,
-  }) : super(location: location);
+  });
 
   factory ColorHighlight.fromJson(
     Map<String, dynamic> json,
@@ -54,4 +64,16 @@ class ColorHighlight extends CodeHighlight {
   @override
   String toString() =>
       'ColorHighlight(start:${location.start}, end:${location.end}), rgb: $rgb)';
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ColorHighlight &&
+        other.location == location &&
+        other.rgb == rgb;
+  }
+
+  @override
+  int get hashCode => location.hashCode ^ rgb.hashCode;
 }

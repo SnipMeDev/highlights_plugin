@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:highlights_plugin/highlights_plugin.dart';
 import 'package:highlights_plugin/model/phrase_location.dart';
 
-// TODO Test code
-// TODO Add changelog
 void main() {
   runApp(const MyApp());
 }
@@ -44,7 +42,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _updateHighlights(String code) async {
-    print('Updating highlights $code');
     _code = code;
     _highlightsPlugin
         .getHighlights(
@@ -54,7 +51,6 @@ class _MyAppState extends State<MyApp> {
       _emphasis,
     )
         .then((value) {
-      print('Flutter Highlights $value');
       setState(() {
         value.sort((a, b) => a.location.start.compareTo(b.location.start));
         _highlights = value.map((highlight) => highlight.toString()).toList();
@@ -206,8 +202,8 @@ class FutureDropdown<T> extends StatelessWidget {
     required this.selected,
     required this.future,
     required this.onChanged,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final T? selected;
   final Future<List<T>> future;
