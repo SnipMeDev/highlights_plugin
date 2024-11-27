@@ -2,7 +2,7 @@ import 'package:highlights_plugin/model/code_highlight.dart';
 import 'package:highlights_plugin/model/phrase_location.dart';
 
 abstract interface class HighlightsInterface {
-  Future<List<CodeHighlight>> getHighlights(
+  void getHighlights(
     String code,
     String language,
     String theme,

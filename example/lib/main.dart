@@ -23,7 +23,7 @@ class _MyAppState extends State<MyApp> {
   final List<PhraseLocation> _emphasis = [];
 
   Future<void> _updateDarkMode(bool isDark) async {
-    _highlightsPlugin.setDarkMode(isDark);
+    await _highlightsPlugin.setDarkMode(isDark);
     _updateHighlights(_code ?? '');
   }
 
@@ -41,7 +41,7 @@ class _MyAppState extends State<MyApp> {
     _updateHighlights(_code ?? '');
   }
 
-  Future<void> _updateHighlights(String code) async {
+  _updateHighlights(String code) {
     _code = code;
     _highlightsPlugin
         .getHighlights(
@@ -49,13 +49,7 @@ class _MyAppState extends State<MyApp> {
       _language,
       _theme,
       _emphasis,
-    )
-        .then((value) {
-      setState(() {
-        value.sort((a, b) => a.location.start.compareTo(b.location.start));
-        _highlights = value.map((highlight) => highlight.toString()).toList();
-      });
-    });
+    );
   }
 
   void _addEmphasis(PhraseLocation location) {

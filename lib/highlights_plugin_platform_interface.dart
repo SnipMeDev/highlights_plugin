@@ -32,7 +32,7 @@ abstract class HighlightsPluginPlatform extends PlatformInterface
   }
 
   @override
-  Future<List<CodeHighlight>> getHighlights(
+  void getHighlights(
     String? code,
     String? language,
     String? theme,
