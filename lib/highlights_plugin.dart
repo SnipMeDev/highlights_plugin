@@ -15,7 +15,8 @@ class HighlightsPlugin implements HighlightsInterface {
   final bool debug;
 
   @override
-  Future<bool> initialize() => HighlightsPlatformInterface.instance.initialize();
+  Future<bool> initialize() =>
+      HighlightsPlatformInterface.instance.initialize();
 
   @override
   Future<List<CodeHighlight>> getHighlights(
@@ -23,7 +24,7 @@ class HighlightsPlugin implements HighlightsInterface {
     String? language,
     String? theme,
     List<PhraseLocation>? emphasisLocations,
-  ){
+  ) {
     try {
       return HighlightsPlatformInterface.instance.getHighlights(
         code,

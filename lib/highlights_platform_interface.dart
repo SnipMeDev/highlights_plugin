@@ -8,7 +8,6 @@ import 'method_index.dart' as methods;
 
 abstract class HighlightsPlatformInterface extends PlatformInterface
     implements HighlightsInterface {
-
   HighlightsPlatformInterface() : super(token: _token);
 
   static final Object _token = Object();
@@ -37,12 +36,14 @@ abstract class HighlightsPlatformInterface extends PlatformInterface
     String? theme,
     List<PhraseLocation>? emphasisLocations,
   ) {
-    throw UnimplementedError('${methods.getHighlights} has not been implemented.');
+    throw UnimplementedError(
+        '${methods.getHighlights} has not been implemented.');
   }
 
   @override
   Future<List<String>> getLanguages() {
-    throw UnimplementedError('${methods.getLanguages} has not been implemented.');
+    throw UnimplementedError(
+        '${methods.getLanguages} has not been implemented.');
   }
 
   @override
@@ -52,6 +53,7 @@ abstract class HighlightsPlatformInterface extends PlatformInterface
 
   @override
   Future<void> setDarkMode(bool useDarkMode) {
-    throw UnimplementedError('${methods.setDarkMode} has not been implemented.');
+    throw UnimplementedError(
+        '${methods.setDarkMode} has not been implemented.');
   }
 }
