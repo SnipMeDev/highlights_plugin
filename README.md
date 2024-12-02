@@ -15,7 +15,7 @@ flutter pub add highlights_plugin
 ```dart
 final plugin = HighlightsPlugin(debug: true);
 
-await success = plugin.initialize();
+final success = await plugin.initialize();
 ```
 
 ```dart
