@@ -1,17 +1,22 @@
 import 'package:flutter/cupertino.dart';
+import 'package:highlights_plugin/highlights_platform_interface.dart';
 import 'package:highlights_plugin/model/code_highlight.dart';
 import 'package:highlights_plugin/model/phrase_location.dart';
 import 'package:highlights_plugin/method_index.dart' as methods;
 import 'highlights_interface.dart';
-import 'highlights_plugin_platform_interface.dart';
 
 class HighlightsPlugin implements HighlightsInterface {
   HighlightsPlugin({this.debug = false}) {
+    // TODO Test logger flag
     // Setup before first `instance` getter call
-    HighlightsPluginPlatform.debug = debug;
+    HighlightsPlatformInterface.debug = debug;
   }
 
   final bool debug;
+
+  @override
+  Future<bool> initialize() =>
+      HighlightsPlatformInterface.instance.initialize();
 
   @override
   Future<List<CodeHighlight>> getHighlights(
@@ -19,9 +24,9 @@ class HighlightsPlugin implements HighlightsInterface {
     String? language,
     String? theme,
     List<PhraseLocation>? emphasisLocations,
-  ) async {
+  ) {
     try {
-      return await HighlightsPluginPlatform.instance.getHighlights(
+      return HighlightsPlatformInterface.instance.getHighlights(
         code,
         language,
         theme,
@@ -29,14 +34,14 @@ class HighlightsPlugin implements HighlightsInterface {
       );
     } catch (e, st) {
       _printDebugInfo(methods.getHighlights, e, st);
-      return [];
+      return Future.value([]);
     }
   }
 
   @override
   Future<List<String>> getLanguages() async {
     try {
-      return await HighlightsPluginPlatform.instance.getLanguages();
+      return await HighlightsPlatformInterface.instance.getLanguages();
     } catch (e, st) {
       _printDebugInfo(methods.getLanguages, e, st);
       return [];
@@ -46,7 +51,7 @@ class HighlightsPlugin implements HighlightsInterface {
   @override
   Future<List<String>> getThemes() async {
     try {
-      return await HighlightsPluginPlatform.instance.getThemes();
+      return await HighlightsPlatformInterface.instance.getThemes();
     } catch (e, st) {
       _printDebugInfo(methods.getThemes, e, st);
       return [];
@@ -56,7 +61,7 @@ class HighlightsPlugin implements HighlightsInterface {
   @override
   Future<void> setDarkMode(bool useDarkMode) {
     try {
-      return HighlightsPluginPlatform.instance.setDarkMode(useDarkMode);
+      return HighlightsPlatformInterface.instance.setDarkMode(useDarkMode);
     } catch (e, st) {
       _printDebugInfo(methods.setDarkMode, e, st);
       return Future.value();

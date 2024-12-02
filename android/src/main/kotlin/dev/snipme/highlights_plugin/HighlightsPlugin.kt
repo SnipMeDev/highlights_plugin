@@ -31,40 +31,33 @@ class HighlightsPlugin : FlutterPlugin, MethodCallHandler {
     }
 
     override fun onMethodCall(call: MethodCall, result: Result) {
-        when (call.method) {
-            "getHighlights" -> {
-                updateInstance(
-                    code = call.argument("code"),
-                    language = SyntaxLanguage.getByName(call.argument("language") ?: ""),
-                    theme = SyntaxThemes.getByName(call.argument("theme") ?: "", useDarkMode),
-                    emphasisLocations = tryGetEmphasisFromJson(call.argument("emphasisLocations"))
-                )
+        try {
+            when (call.method) {
+                "getHighlights" -> {
+                    updateInstance(
+                        code = call.argument("code"),
+                        language = SyntaxLanguage.getByName(call.argument("language") ?: ""),
+                        theme = SyntaxThemes.getByName(call.argument("theme") ?: "", useDarkMode),
+                        emphasisLocations = tryGetEmphasisFromJson(call.argument("emphasisLocations"))
+                    )
 
-                highlights.getHighlightsAsync(
-                    object: DefaultHighlightsResultListener() {
-                        override fun onSuccess(highlights: List<CodeHighlight>) {
-                            result.success(highlights.toJson())
-                        }
+                    val output = highlights.getHighlights()
+                    result.success(output.toJson())
+                }
 
-                        override fun onCancel() {
-                            result.success(null)
-                        }
+                "getLanguages" -> result.success(SyntaxLanguage.getNames())
+                "getThemes" -> result.success(SyntaxThemes.getNames(useDarkMode))
+                "setDarkMode" -> {
+                    useDarkMode = call.argument("useDarkMode") ?: false
+                    result.success(null)
+                }
 
-                        override fun onError(exception: Throwable) {
-                            result.error("Error", exception.message, null)
-                        }
-                    }
-                )
+                else -> {
+                    result.notImplemented()
+                }
             }
-            "getLanguages" -> result.success(SyntaxLanguage.getNames())
-            "getThemes" -> result.success(SyntaxThemes.getNames(useDarkMode))
-            "setDarkMode" -> {
-                useDarkMode = call.argument("useDarkMode") ?: false
-                result.success(null)
-            }
-            else -> {
-                result.notImplemented()
-            }
+        } catch (e: Exception) {
+            result.error("Error", e.message, e)
         }
     }
 

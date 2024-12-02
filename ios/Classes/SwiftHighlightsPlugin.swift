@@ -45,30 +45,10 @@ public class SwiftHighlightsPlugin: NSObject, FlutterPlugin {
             theme: theme,
             emphasisLocations: emphasis
           )
-          
-          class Listener: DefaultHighlightsResultListener {
-              var flutterResult: FlutterResult
 
-              init(flutterResult: @escaping FlutterResult) {
-                  self.flutterResult = flutterResult
-              }
+          let highlightList = highlights.getHighlights();
 
-              override func onStart() {}
-
-              override func onCancel() {
-                  flutterResult(nil)
-              }
-
-              override func onSuccess(result: [CodeHighlight]) {
-                  flutterResult(ExtensionsKt.toJson(result))
-              }
-
-              override func onError(exception: KotlinThrowable) {
-                  flutterResult(exception)
-              }
-          }
-
-          highlights.getHighlightsAsync(listener: Listener(flutterResult: result));
+          result(ExtensionsKt.toJson(highlightList))
       case "setDarkMode":
           let map = call.arguments as! Dictionary<String, Any>
           useDarkMode = map["useDarkMode"] as? Bool ?? false
