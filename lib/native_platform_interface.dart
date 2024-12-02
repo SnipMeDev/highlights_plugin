@@ -5,15 +5,14 @@ import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:highlights_plugin/highlights_interface.dart';
+import 'package:highlights_plugin/highlights_platform_interface.dart';
 import 'package:highlights_plugin/model/code_highlight.dart';
 import 'package:highlights_plugin/model/phrase_location.dart';
 import 'package:highlights_plugin/method_index.dart' as methods;
 
-import 'highlights_plugin_platform_interface.dart';
-
-class MethodChannelHighlightsPlugin extends HighlightsPluginPlatform
+class NativePlatformInterface extends HighlightsPlatformInterface
     implements HighlightsInterface {
-  MethodChannelHighlightsPlugin({required this.debug});
+  NativePlatformInterface({required this.debug});
 
   @visibleForTesting
   late MethodChannel methodChannel;
@@ -34,6 +33,7 @@ class MethodChannelHighlightsPlugin extends HighlightsPluginPlatform
         StandardMethodCodec(),
         BackgroundIsolateBinaryMessenger.instance,
       );
+      _debugPrint('${methods.initialize}: Initialization completed!');
       return true;
     } catch (e, s) {
       _debugPrint('${methods.initialize}: Error: $e, $s');
