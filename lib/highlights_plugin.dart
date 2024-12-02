@@ -14,14 +14,17 @@ class HighlightsPlugin implements HighlightsInterface {
   final bool debug;
 
   @override
-  void getHighlights(
+  Future<bool> initialize() => HighlightsPluginPlatform.instance.initialize();
+
+  @override
+  Future<List<CodeHighlight>> getHighlights(
     String code,
     String? language,
     String? theme,
     List<PhraseLocation>? emphasisLocations,
-  ) {
+  ){
     try {
-      HighlightsPluginPlatform.instance.getHighlights(
+      return HighlightsPluginPlatform.instance.getHighlights(
         code,
         language,
         theme,
@@ -29,7 +32,7 @@ class HighlightsPlugin implements HighlightsInterface {
       );
     } catch (e, st) {
       _printDebugInfo(methods.getHighlights, e, st);
-      // return [];
+      return Future.value([]);
     }
   }
 

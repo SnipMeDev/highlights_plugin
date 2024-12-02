@@ -1,28 +1,22 @@
 import 'dart:convert';
+import 'dart:core';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:highlights_plugin/highlights_interface.dart';
+import 'package:highlights_plugin/model/code_highlight.dart';
 import 'package:highlights_plugin/model/phrase_location.dart';
 import 'package:highlights_plugin/method_index.dart' as methods;
-import 'package:collection/collection.dart';
 
 import 'highlights_plugin_platform_interface.dart';
 
 class MethodChannelHighlightsPlugin extends HighlightsPluginPlatform
     implements HighlightsInterface {
-  MethodChannelHighlightsPlugin({required this.debug}) {
-    BackgroundIsolateBinaryMessenger.ensureInitialized(
-      ServicesBinding.rootIsolateToken!,
-    );
-  }
+  MethodChannelHighlightsPlugin({required this.debug});
 
   @visibleForTesting
-  final methodChannel = MethodChannel(
-    'highlights_plugin',
-    StandardMethodCodec(),
-    BackgroundIsolateBinaryMessenger.instance,
-  );
+  late MethodChannel methodChannel;
 
   final bool debug;
 
@@ -30,33 +24,55 @@ class MethodChannelHighlightsPlugin extends HighlightsPluginPlatform
   List<String>? _cachedThemes;
 
   @override
-  void getHighlights(
+  Future<bool> initialize() async {
+    try {
+      BackgroundIsolateBinaryMessenger.ensureInitialized(
+        ServicesBinding.rootIsolateToken!,
+      );
+      methodChannel = MethodChannel(
+        'highlights_plugin',
+        StandardMethodCodec(),
+        BackgroundIsolateBinaryMessenger.instance,
+      );
+      return true;
+    } catch (e, s) {
+      _debugPrint('${methods.initialize}: Error: $e, $s');
+      return false;
+    }
+  }
+
+  @override
+  Future<List<CodeHighlight>> getHighlights(
     String? code,
     String? language,
     String? theme,
     List<PhraseLocation>? emphasisLocations,
-  ) {
+  ) async {
     final arguments = {
       "code": code,
-      "language": "java",
-      "theme": "monokai",
+      "language": await _getLanguage(language),
+      "theme": await _getTheme(theme),
       "emphasisLocations": jsonEncode(emphasisLocations),
     };
 
-    final json = methodChannel.invokeMethod(
+    final highlightsJson = await methodChannel.invokeMethod(
       methods.getHighlights,
       arguments,
     );
 
-    // final data = jsonDecode(json);
+    final data = await compute(
+      (json) => jsonDecode(json),
+      highlightsJson,
+    );
 
-    // if (data is List) {
-    //   return data.map((e) => CodeHighlight.fromJson(e)).toList();
-    // } else {
-    //   _debugPrint(
-    //     '${methods.getHighlights}: Expected List but got ${data.runtimeType}',
-    //   );
-    //   return [];
+    if (data is List) {
+      return data.map((e) => CodeHighlight.fromJson(e)).toList();
+    } else {
+      _debugPrint(
+        '${methods.getHighlights}: Expected List but got ${data.runtimeType}',
+      );
+      return [];
+    }
   }
 
   @override

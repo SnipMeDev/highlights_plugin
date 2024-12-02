@@ -32,7 +32,12 @@ abstract class HighlightsPluginPlatform extends PlatformInterface
   }
 
   @override
-  void getHighlights(
+  Future<bool> initialize() {
+    throw UnimplementedError('${methods.initialize} has not been implemented.');
+  }
+
+  @override
+  Future<List<CodeHighlight>> getHighlights(
     String? code,
     String? language,
     String? theme,
