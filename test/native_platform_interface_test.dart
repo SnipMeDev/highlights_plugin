@@ -1,14 +1,13 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:highlights_plugin/highlights_plugin_method_channel.dart';
 
 import 'package:highlights_plugin/method_index.dart' as methods;
 import 'package:highlights_plugin/model/code_highlight.dart';
 import 'package:highlights_plugin/model/phrase_location.dart';
+import 'package:highlights_plugin/native_platform_interface.dart';
 
 void main() {
-  MethodChannelHighlightsPlugin platform =
-      MethodChannelHighlightsPlugin(debug: true);
+  NativePlatformInterface platform = NativePlatformInterface(debug: true);
   const MethodChannel channel = MethodChannel('highlights_plugin');
 
   TestWidgetsFlutterBinding.ensureInitialized();

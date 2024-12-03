@@ -15,6 +15,10 @@ flutter pub add highlights_plugin
 ```dart
 final plugin = HighlightsPlugin(debug: true);
 
+final success = await plugin.initialize();
+```
+
+```dart
 // ['kotlin', 'dart', 'swift', 'php', 'java', ...]
 final languages = await plugin.getLanguages();
 // ['monokai', 'darcula', 'notepad', ...]
