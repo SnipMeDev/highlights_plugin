@@ -1,28 +1,45 @@
 import 'dart:convert';
+import 'dart:core';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:highlights_plugin/highlights_interface.dart';
+import 'package:highlights_plugin/highlights_platform_interface.dart';
 import 'package:highlights_plugin/model/code_highlight.dart';
 import 'package:highlights_plugin/model/phrase_location.dart';
 import 'package:highlights_plugin/method_index.dart' as methods;
-import 'package:collection/collection.dart';
 
-import 'highlights_plugin_platform_interface.dart';
-
-/// An implementation of [HighlightsPluginPlatform] that uses method channels.
-class MethodChannelHighlightsPlugin extends HighlightsPluginPlatform
+class NativePlatformInterface extends HighlightsPlatformInterface
     implements HighlightsInterface {
-  MethodChannelHighlightsPlugin({required this.debug});
+  NativePlatformInterface({required this.debug});
 
-  /// The method channel used to interact with the native platform.
   @visibleForTesting
-  final methodChannel = const MethodChannel('highlights_plugin');
+  late MethodChannel methodChannel;
 
   final bool debug;
 
   List<String>? _cachedLanguages;
   List<String>? _cachedThemes;
+
+  @override
+  Future<bool> initialize() async {
+    try {
+      BackgroundIsolateBinaryMessenger.ensureInitialized(
+        ServicesBinding.rootIsolateToken!,
+      );
+      methodChannel = MethodChannel(
+        'highlights_plugin',
+        StandardMethodCodec(),
+        BackgroundIsolateBinaryMessenger.instance,
+      );
+      _debugPrint('${methods.initialize}: Initialization completed!');
+      return true;
+    } catch (e, s) {
+      _debugPrint('${methods.initialize}: Error: $e, $s');
+      return false;
+    }
+  }
 
   @override
   Future<List<CodeHighlight>> getHighlights(
@@ -33,17 +50,20 @@ class MethodChannelHighlightsPlugin extends HighlightsPluginPlatform
   ) async {
     final arguments = {
       "code": code,
-      "language": (await _getLanguage(language)),
-      "theme": (await _getTheme(theme)),
+      "language": await _getLanguage(language),
+      "theme": await _getTheme(theme),
       "emphasisLocations": jsonEncode(emphasisLocations),
     };
 
-    final json = await methodChannel.invokeMethod(
+    final highlightsJson = await methodChannel.invokeMethod(
       methods.getHighlights,
       arguments,
     );
 
-    final data = jsonDecode(json);
+    final data = await compute(
+      (json) => jsonDecode(json),
+      highlightsJson,
+    );
 
     if (data is List) {
       return data.map((e) => CodeHighlight.fromJson(e)).toList();

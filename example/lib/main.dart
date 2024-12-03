@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:highlights_plugin/highlights_plugin.dart';
 import 'package:highlights_plugin/model/phrase_location.dart';
@@ -23,7 +25,7 @@ class _MyAppState extends State<MyApp> {
   final List<PhraseLocation> _emphasis = [];
 
   Future<void> _updateDarkMode(bool isDark) async {
-    _highlightsPlugin.setDarkMode(isDark);
+    await _highlightsPlugin.setDarkMode(isDark);
     _updateHighlights(_code ?? '');
   }
 
@@ -41,19 +43,14 @@ class _MyAppState extends State<MyApp> {
     _updateHighlights(_code ?? '');
   }
 
-  Future<void> _updateHighlights(String code) async {
+  _updateHighlights(String code) {
     _code = code;
     _highlightsPlugin
-        .getHighlights(
-      _code ?? '',
-      _language,
-      _theme,
-      _emphasis,
-    )
-        .then((value) {
+        .getHighlights(_code ?? '', _language, _theme, _emphasis)
+        .then((highlights) {
       setState(() {
-        value.sort((a, b) => a.location.start.compareTo(b.location.start));
-        _highlights = value.map((highlight) => highlight.toString()).toList();
+        _highlights =
+            highlights.map((highlight) => highlight.toString()).toList();
       });
     });
   }
@@ -61,6 +58,12 @@ class _MyAppState extends State<MyApp> {
   void _addEmphasis(PhraseLocation location) {
     _emphasis.add(location);
     _updateHighlights(_code ?? '');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    unawaited(_highlightsPlugin.initialize());
   }
 
   @override
