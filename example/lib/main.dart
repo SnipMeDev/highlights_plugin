@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:highlights_plugin/highlights_plugin.dart';
 import 'package:highlights_plugin/model/phrase_location.dart';
 
